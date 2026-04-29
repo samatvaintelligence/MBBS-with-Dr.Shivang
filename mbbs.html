@@ -203,27 +203,38 @@ tailwind.config = {
         <p class="text-muted text-body-lg">I’m showing both numbers because the tuition fee alone is not the full first-year budget. This way you can compare the official university fee with the real amount a family should plan for.</p>
       </div>
 
-      <div class="inline-flex flex-col sm:flex-row gap-2 bg-surface border border-border-subtle rounded-full p-2 mb-10" role="tablist" aria-label="Fee view">
-        <button type="button" data-fee-view="official" aria-selected="true" class="h-12 px-6 rounded-full bg-zinc-950 text-white shadow-sm font-button uppercase tracking-widest transition-all" role="tab">
-          Official tuition + hostel
-        </button>
-        <button type="button" data-fee-view="inclusive" aria-selected="false" class="h-12 px-6 rounded-full text-muted font-button uppercase tracking-widest transition-all" role="tab">
-          All-inclusive real cost
-        </button>
+      <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 mb-10">
+        <div class="inline-flex flex-col sm:flex-row gap-2 bg-surface border border-border-subtle rounded-full p-2 w-fit" role="tablist" aria-label="Fee view">
+          <button type="button" data-fee-view="official" aria-selected="true" class="h-12 px-6 rounded-full bg-zinc-950 text-white shadow-sm font-button uppercase tracking-widest transition-all" role="tab">
+            Official tuition + hostel
+          </button>
+          <button type="button" data-fee-view="inclusive" aria-selected="false" class="h-12 px-6 rounded-full text-muted font-button uppercase tracking-widest transition-all" role="tab">
+            All-inclusive real cost
+          </button>
+        </div>
+
+        <div class="inline-flex gap-2 bg-surface border border-border-subtle rounded-full p-2 w-fit" role="tablist" aria-label="Currency view">
+          <button type="button" data-fee-currency="rub" aria-selected="true" class="h-10 px-5 rounded-full bg-zinc-950 text-white shadow-sm font-button uppercase tracking-widest transition-all" role="tab">
+            RUB
+          </button>
+          <button type="button" data-fee-currency="inr" aria-selected="false" class="h-10 px-5 rounded-full text-muted font-button uppercase tracking-widest transition-all" role="tab">
+            INR
+          </button>
+        </div>
       </div>
 
       <div data-fee-panel="official" role="tabpanel">
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-10">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <div class="bg-zinc-950 text-white p-8 rounded-3xl">
             <div class="font-label text-xs uppercase tracking-widest text-zinc-500 mb-2">Official tuition fee</div>
-            <div class="font-display text-5xl font-black text-primary mb-2">2,45,000</div>
-            <p class="text-zinc-300 font-bold text-sm uppercase tracking-widest mb-4">RUB / yr</p>
+            <div data-currency-amount data-rub="2,45,000" data-inr="₹2.70L" class="font-display text-5xl font-black text-primary mb-2">2,45,000</div>
+            <p data-currency-unit data-rub="RUB / yr" data-inr="INR / yr" class="text-zinc-300 font-bold text-sm uppercase tracking-widest mb-4">RUB / yr</p>
             <p class="text-zinc-400 text-sm">This is the university-side tuition fee many consultants show first.</p>
           </div>
           <div class="bg-surface border border-border-subtle p-8 rounded-3xl">
             <div class="font-label text-xs uppercase tracking-widest text-muted mb-2">Official hostel fee</div>
-            <div class="font-display text-5xl font-black text-on-surface mb-2">8,500</div>
-            <p class="text-muted font-bold text-sm uppercase tracking-widest mb-4">RUB / month</p>
+            <div data-currency-amount data-rub="8,500" data-inr="₹9,350" class="font-display text-5xl font-black text-on-surface mb-2">8,500</div>
+            <p data-currency-unit data-rub="RUB / month" data-inr="INR / month" class="text-muted font-bold text-sm uppercase tracking-widest mb-4">RUB / month</p>
             <p class="text-muted text-sm">The PDF also lists years 2-6 hostel as 80,000 RUB annually.</p>
           </div>
           <div class="bg-surface border border-border-subtle p-8 rounded-3xl">
@@ -233,14 +244,7 @@ tailwind.config = {
           </div>
         </div>
 
-        <div class="max-w-3xl bg-surface rounded-3xl border border-border-subtle p-8">
-          <h3 class="font-display text-h2 font-black mb-6 uppercase tracking-tight">Official annual fee breakdown</h3>
-          <div class="divide-y divide-border-subtle text-body-sm">
-            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 py-4"><span class="text-muted">Tuition fee</span><span class="font-bold">2,45,000 RUB / yr</span></div>
-            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 py-4"><span class="text-muted">Hostel</span><span class="font-bold">8,500 RUB / month</span></div>
-          </div>
-          <p class="text-xs text-muted italic mt-4">RUB amounts converted at ~₹1.10/RUB. Exchange rate variation can shift the INR total by a few percent.</p>
-        </div>
+        <p class="text-xs text-muted italic mt-5">INR conversion shown at ~₹1.10/RUB. Exchange rate variation can shift the final INR amount by a few percent.</p>
       </div>
 
       <div data-fee-panel="inclusive" class="hidden" role="tabpanel">

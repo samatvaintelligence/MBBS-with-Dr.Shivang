@@ -10,6 +10,7 @@ document.addEventListener("DOMContentLoaded", () => {
   rewriteTelLinks();
   rewriteSocialLinks();
   initFeeToggle();
+  initFeeCurrencyToggle();
   initLanguageToggle();
   initAdmissionsForm();
 });
@@ -73,6 +74,38 @@ function initFeeToggle() {
 
   toggles.forEach((toggle) => {
     toggle.addEventListener("click", () => showFeeView(toggle.getAttribute("data-fee-view")));
+  });
+}
+
+function initFeeCurrencyToggle() {
+  const toggles = document.querySelectorAll("[data-fee-currency]");
+  const amounts = document.querySelectorAll("[data-currency-amount]");
+  const units = document.querySelectorAll("[data-currency-unit]");
+  if (!toggles.length || !amounts.length) return;
+
+  function showCurrency(currency) {
+    toggles.forEach((toggle) => {
+      const isActive = toggle.getAttribute("data-fee-currency") === currency;
+      toggle.setAttribute("aria-selected", String(isActive));
+      toggle.classList.toggle("bg-zinc-950", isActive);
+      toggle.classList.toggle("text-white", isActive);
+      toggle.classList.toggle("shadow-sm", isActive);
+      toggle.classList.toggle("text-muted", !isActive);
+    });
+
+    amounts.forEach((amount) => {
+      const value = amount.getAttribute(`data-${currency}`);
+      if (value) amount.textContent = value;
+    });
+
+    units.forEach((unit) => {
+      const value = unit.getAttribute(`data-${currency}`);
+      if (value) unit.textContent = value;
+    });
+  }
+
+  toggles.forEach((toggle) => {
+    toggle.addEventListener("click", () => showCurrency(toggle.getAttribute("data-fee-currency")));
   });
 }
 
