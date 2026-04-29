@@ -197,37 +197,110 @@ tailwind.config = {
   <!-- Fees -->
   <section class="py-24 px-8 bg-white" id="fees">
     <div class="max-w-screen-2xl mx-auto">
-      <div class="max-w-2xl mb-12">
+      <div class="max-w-3xl mb-10">
         <span class="inline-block bg-primary/10 text-primary font-label text-xs uppercase tracking-widest px-3 py-1 rounded-full mb-4">Chuvash · 2025-26</span>
         <h2 class="font-display text-display text-on-surface mb-4">What it actually costs</h2>
-        <p class="text-muted text-body-lg">Real numbers, no donations, no hidden agent commissions. The first year carries the one-time setup costs. Years 2-6 are just tuition and hostel.</p>
+        <p class="text-muted text-body-lg">I’m showing both numbers because the tuition fee alone is not the full first-year budget. This way you can compare the official university fee with the real amount a family should plan for.</p>
       </div>
 
-      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-12">
-        <div class="bg-zinc-950 text-white p-8 rounded-3xl">
-          <div class="font-label text-xs uppercase tracking-widest text-zinc-500 mb-2">First Year (2025-26)</div>
-          <div class="font-display text-5xl font-black text-primary mb-2">₹9.12L</div>
-          <p class="text-zinc-400 text-sm">All-in first year including setup costs. Plus ~₹35K flight.</p>
+      <div class="inline-flex flex-col sm:flex-row gap-2 bg-surface border border-border-subtle rounded-full p-2 mb-10" role="tablist" aria-label="Fee view">
+        <button type="button" data-fee-view="official" aria-selected="true" class="h-12 px-6 rounded-full bg-zinc-950 text-white shadow-sm font-button uppercase tracking-widest transition-all" role="tab">
+          Official tuition + hostel
+        </button>
+        <button type="button" data-fee-view="inclusive" aria-selected="false" class="h-12 px-6 rounded-full text-muted font-button uppercase tracking-widest transition-all" role="tab">
+          All-inclusive real cost
+        </button>
+      </div>
+
+      <div data-fee-panel="official" role="tabpanel">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-10">
+          <div class="bg-zinc-950 text-white p-8 rounded-3xl">
+            <div class="font-label text-xs uppercase tracking-widest text-zinc-500 mb-2">Official tuition fee</div>
+            <div class="font-display text-5xl font-black text-primary mb-2">2,45,000</div>
+            <p class="text-zinc-300 font-bold text-sm uppercase tracking-widest mb-4">RUB / yr</p>
+            <p class="text-zinc-400 text-sm">This is the university-side tuition fee many consultants show first.</p>
+          </div>
+          <div class="bg-surface border border-border-subtle p-8 rounded-3xl">
+            <div class="font-label text-xs uppercase tracking-widest text-muted mb-2">Official hostel fee</div>
+            <div class="font-display text-5xl font-black text-on-surface mb-2">8,500</div>
+            <p class="text-muted font-bold text-sm uppercase tracking-widest mb-4">RUB / month</p>
+            <p class="text-muted text-sm">The PDF also lists years 2-6 hostel as 80,000 RUB annually.</p>
+          </div>
+          <div class="bg-surface border border-border-subtle p-8 rounded-3xl">
+            <div class="font-label text-xs uppercase tracking-widest text-muted mb-2">After first year</div>
+            <div class="font-display text-5xl font-black text-on-surface mb-2">₹3.35L<span class="text-2xl font-bold text-muted">/yr</span></div>
+            <p class="text-muted text-sm">Approximate annual cost from year 2 onward, when one-time setup costs are over.</p>
+          </div>
         </div>
-        <div class="bg-surface border border-border-subtle p-8 rounded-3xl">
-          <div class="font-label text-xs uppercase tracking-widest text-muted mb-2">Years 2 – 6</div>
-          <div class="font-display text-5xl font-black text-on-surface mb-2">₹3.35L<span class="text-2xl font-bold text-muted">/yr</span></div>
-          <p class="text-muted text-sm">Tuition + hostel only. No more processing or admin fees once enrolled.</p>
-        </div>
-        <div class="bg-surface border border-border-subtle p-8 rounded-3xl">
-          <div class="font-label text-xs uppercase tracking-widest text-muted mb-2">Total · 5.8 Years</div>
-          <div class="font-display text-5xl font-black text-on-surface mb-2">₹25.85L</div>
-          <p class="text-muted text-sm">Compared to ₹70L–1.5Cr at Indian private colleges — without the donation.</p>
+
+        <div class="max-w-3xl bg-surface rounded-3xl border border-border-subtle p-8">
+          <h3 class="font-display text-h2 font-black mb-6 uppercase tracking-tight">Official annual fee breakdown</h3>
+          <div class="divide-y divide-border-subtle text-body-sm">
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 py-4"><span class="text-muted">Tuition fee</span><span class="font-bold">2,45,000 RUB / yr</span></div>
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 py-4"><span class="text-muted">Hostel</span><span class="font-bold">8,500 RUB / month</span></div>
+          </div>
+          <p class="text-xs text-muted italic mt-4">RUB amounts converted at ~₹1.10/RUB. Exchange rate variation can shift the INR total by a few percent.</p>
         </div>
       </div>
 
-      <div class="max-w-xl bg-surface rounded-3xl border border-border-subtle p-8">
-        <h3 class="font-display text-h2 font-black mb-6 uppercase tracking-tight">Annual fee breakdown</h3>
-        <div class="divide-y divide-border-subtle text-body-sm">
-          <div class="flex justify-between py-4"><span class="text-muted">Tuition fee</span><span class="font-bold">2,45,000 RUB / yr</span></div>
-          <div class="flex justify-between py-4"><span class="text-muted">Hostel</span><span class="font-bold">8,500 RUB / month</span></div>
+      <div data-fee-panel="inclusive" class="hidden" role="tabpanel">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-10">
+          <div class="bg-zinc-950 text-white p-8 rounded-3xl">
+            <div class="font-label text-xs uppercase tracking-widest text-zinc-500 mb-2">First year all-in</div>
+            <div class="font-display text-5xl font-black text-primary mb-2">₹9.12L</div>
+            <p class="text-zinc-300 font-bold text-sm uppercase tracking-widest mb-4">+ ~₹35,000 flights</p>
+            <p class="text-zinc-400 text-sm">Includes first-year setup costs, documents, visa, medical, food, and arrival support.</p>
+          </div>
+          <div class="bg-surface border border-border-subtle p-8 rounded-3xl">
+            <div class="font-label text-xs uppercase tracking-widest text-muted mb-2">Years 2 – 6</div>
+            <div class="font-display text-5xl font-black text-on-surface mb-2">₹3.35L<span class="text-2xl font-bold text-muted">/yr</span></div>
+            <p class="text-muted text-sm">Tuition + hostel only. Food is optional after the first year.</p>
+          </div>
+          <div class="bg-surface border border-border-subtle p-8 rounded-3xl">
+            <div class="font-label text-xs uppercase tracking-widest text-muted mb-2">Total · 5.8 Years</div>
+            <div class="font-display text-5xl font-black text-on-surface mb-2">₹25.85L</div>
+            <p class="text-muted text-sm">Compared to ₹70L–1.5Cr at Indian private colleges — without the donation.</p>
+          </div>
         </div>
-        <p class="text-xs text-muted italic mt-4">RUB amounts converted at ~₹1.10/RUB. Exchange rate variation can shift the INR total by a few percent.</p>
+
+        <div class="bg-surface rounded-3xl border border-border-subtle p-8">
+          <div class="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-4 mb-8">
+            <div>
+              <h3 class="font-display text-h2 font-black mb-3 uppercase tracking-tight">What this includes</h3>
+              <p class="text-muted text-body-sm max-w-2xl">The first-year total is higher because it includes setup and support costs that are easy to hide when someone only shows tuition.</p>
+            </div>
+            <div class="font-label text-xs uppercase tracking-widest text-primary bg-primary/10 px-3 py-1 rounded-full w-fit">PDF page 7–8 grouped</div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+            <div class="bg-white border border-border-subtle rounded-2xl p-5">
+              <h4 class="font-display font-black uppercase tracking-tight mb-2">University + hostel</h4>
+              <p class="text-muted text-body-sm">Tuition, hostel, library fee, exam fee, and dormitory placement support.</p>
+            </div>
+            <div class="bg-white border border-border-subtle rounded-2xl p-5">
+              <h4 class="font-display font-black uppercase tracking-tight mb-2">Food + arrival</h4>
+              <p class="text-muted text-body-sm">Indian mess, quarantine food for the first four days, airport pickup, and arrival assistance.</p>
+            </div>
+            <div class="bg-white border border-border-subtle rounded-2xl p-5">
+              <h4 class="font-display font-black uppercase tracking-tight mb-2">Visa + medical</h4>
+              <p class="text-muted text-body-sm">Visa charges, temporary residency card, medical tests, insurance, and medical check-up assistance.</p>
+            </div>
+            <div class="bg-white border border-border-subtle rounded-2xl p-5">
+              <h4 class="font-display font-black uppercase tracking-tight mb-2">Documents</h4>
+              <p class="text-muted text-body-sm">Admission and invitation letters, apostille, passport and education-document translation, and notarization.</p>
+            </div>
+            <div class="bg-white border border-border-subtle rounded-2xl p-5">
+              <h4 class="font-display font-black uppercase tracking-tight mb-2">Processing + setup</h4>
+              <p class="text-muted text-body-sm">Administration charges, processing fee, registration, visa-extension support, and SIM setup.</p>
+            </div>
+            <div class="bg-white border border-border-subtle rounded-2xl p-5">
+              <h4 class="font-display font-black uppercase tracking-tight mb-2">First-year guidance</h4>
+              <p class="text-muted text-body-sm">Guidance and support through the entire 2025-2026 academic year.</p>
+            </div>
+          </div>
+
+          <p class="text-xs text-muted italic mt-6">First-year PDF subtotal: 3,60,500 INR + 4,41,000 RUB = ₹9,12,500, before flights of about ₹35,000.</p>
+        </div>
       </div>
     </div>
   </section>

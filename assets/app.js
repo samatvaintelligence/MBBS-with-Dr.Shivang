@@ -9,6 +9,7 @@ document.addEventListener("DOMContentLoaded", () => {
   rewriteWhatsAppLinks();
   rewriteTelLinks();
   rewriteSocialLinks();
+  initFeeToggle();
   initLanguageToggle();
   initAdmissionsForm();
 });
@@ -47,6 +48,31 @@ function rewriteSocialLinks() {
     el.setAttribute("aria-disabled", "true");
     el.setAttribute("title", "Facebook page to be created");
     el.addEventListener("click", (event) => event.preventDefault());
+  });
+}
+
+function initFeeToggle() {
+  const toggles = document.querySelectorAll("[data-fee-view]");
+  const panels = document.querySelectorAll("[data-fee-panel]");
+  if (!toggles.length || !panels.length) return;
+
+  function showFeeView(view) {
+    toggles.forEach((toggle) => {
+      const isActive = toggle.getAttribute("data-fee-view") === view;
+      toggle.setAttribute("aria-selected", String(isActive));
+      toggle.classList.toggle("bg-zinc-950", isActive);
+      toggle.classList.toggle("text-white", isActive);
+      toggle.classList.toggle("shadow-sm", isActive);
+      toggle.classList.toggle("text-muted", !isActive);
+    });
+
+    panels.forEach((panel) => {
+      panel.classList.toggle("hidden", panel.getAttribute("data-fee-panel") !== view);
+    });
+  }
+
+  toggles.forEach((toggle) => {
+    toggle.addEventListener("click", () => showFeeView(toggle.getAttribute("data-fee-view")));
   });
 }
 
