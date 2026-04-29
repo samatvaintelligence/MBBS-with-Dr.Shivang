@@ -2,10 +2,13 @@
 // International format, digits only, no + or spaces.
 const WA_NUMBER = "919211567773";
 const WA_MESSAGE = "I want to be a doctor";
+const INSTAGRAM_URL = "https://www.instagram.com/mbbswithdr.shivang/?__d=1";
+const FACEBOOK_URL = "";
 
 document.addEventListener("DOMContentLoaded", () => {
   rewriteWhatsAppLinks();
   rewriteTelLinks();
+  rewriteSocialLinks();
   initLanguageToggle();
   initAdmissionsForm();
 });
@@ -22,6 +25,28 @@ function rewriteWhatsAppLinks() {
 function rewriteTelLinks() {
   document.querySelectorAll('[data-tel="1"]').forEach((el) => {
     el.setAttribute("href", `tel:+${WA_NUMBER}`);
+  });
+}
+
+function rewriteSocialLinks() {
+  document.querySelectorAll('[data-social="instagram"]').forEach((el) => {
+    el.setAttribute("href", INSTAGRAM_URL);
+    el.setAttribute("target", "_blank");
+    el.setAttribute("rel", "noopener noreferrer");
+  });
+
+  document.querySelectorAll('[data-social="facebook"]').forEach((el) => {
+    if (FACEBOOK_URL) {
+      el.setAttribute("href", FACEBOOK_URL);
+      el.setAttribute("target", "_blank");
+      el.setAttribute("rel", "noopener noreferrer");
+      return;
+    }
+
+    el.setAttribute("href", "#");
+    el.setAttribute("aria-disabled", "true");
+    el.setAttribute("title", "Facebook page to be created");
+    el.addEventListener("click", (event) => event.preventDefault());
   });
 }
 
