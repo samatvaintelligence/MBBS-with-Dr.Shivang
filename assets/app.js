@@ -4,16 +4,146 @@ const WA_NUMBER = "919211567773";
 const WA_MESSAGE = "I want to be a doctor";
 const INSTAGRAM_URL = "https://www.instagram.com/mbbswithdr.shivang/?__d=1";
 const FACEBOOK_URL = "";
+const CALENDLY_URL = "https://calendly.com/samatvaintelligence/30min";
+
+// Paste the deployed Google Apps Script web app URL here after deployment.
+const LEAD_ENDPOINT_URL = "";
+
+// Paste the Meta Pixel ID here. Tracking is skipped when this is empty.
+const META_PIXEL_ID = "";
+
+const ATTRIBUTION_STORAGE_KEY = "mbbsWithDrShivangAttribution";
+const ATTRIBUTION_KEYS = [
+  "utm_source",
+  "utm_medium",
+  "utm_campaign",
+  "utm_content",
+  "utm_term",
+  "campaign_id",
+  "adset_id",
+  "ad_id",
+  "placement",
+];
 
 document.addEventListener("DOMContentLoaded", () => {
+  initAttribution();
+  initMetaPixel();
   rewriteWhatsAppLinks();
   rewriteTelLinks();
   rewriteSocialLinks();
+  initCalendlyButtons();
   initFeeToggle();
   initFeeCurrencyToggle();
   initLanguageToggle();
   initAdmissionsForm();
 });
+
+function initAttribution() {
+  const attribution = collectAttribution();
+  try {
+    sessionStorage.setItem(ATTRIBUTION_STORAGE_KEY, JSON.stringify(attribution));
+  } catch (err) {
+    // Private browsing can block storage; the in-memory attribution still works for this page.
+  }
+  populateAttributionFields(attribution);
+}
+
+function collectAttribution() {
+  const params = new URLSearchParams(window.location.search);
+  const stored = getStoredAttribution();
+  const attribution = { ...stored };
+
+  ATTRIBUTION_KEYS.forEach((key) => {
+    const value = params.get(key);
+    if (value) attribution[key] = value;
+  });
+
+  if (!attribution.landingPage) {
+    attribution.landingPage = window.location.href;
+  }
+
+  if (!attribution.referrer && document.referrer) {
+    attribution.referrer = document.referrer;
+  }
+
+  attribution.currentPage = window.location.href;
+  attribution.sourcePage = window.location.pathname.split("/").pop() || "index.html";
+  attribution.userAgent = navigator.userAgent;
+
+  return attribution;
+}
+
+function getStoredAttribution() {
+  try {
+    return JSON.parse(sessionStorage.getItem(ATTRIBUTION_STORAGE_KEY) || "{}");
+  } catch (err) {
+    return {};
+  }
+}
+
+function getAttribution() {
+  return collectAttribution();
+}
+
+function populateAttributionFields(attribution) {
+  document.querySelectorAll("[data-attribution-field]").forEach((input) => {
+    const key = input.getAttribute("data-attribution-field");
+    input.value = attribution[key] || "";
+  });
+}
+
+function initMetaPixel() {
+  if (!META_PIXEL_ID) return;
+
+  if (!window.fbq) {
+    !(function (f, b, e, v, n, t, s) {
+      if (f.fbq) return;
+      n = f.fbq = function () {
+        n.callMethod ? n.callMethod.apply(n, arguments) : n.queue.push(arguments);
+      };
+      if (!f._fbq) f._fbq = n;
+      n.push = n;
+      n.loaded = true;
+      n.version = "2.0";
+      n.queue = [];
+      t = b.createElement(e);
+      t.async = true;
+      t.src = v;
+      s = b.getElementsByTagName(e)[0];
+      s.parentNode.insertBefore(t, s);
+    })(window, document, "script", "https://connect.facebook.net/en_US/fbevents.js");
+  }
+
+  window.fbq("init", META_PIXEL_ID);
+  window.fbq("track", "PageView", getTrackingParams());
+}
+
+function getTrackingParams(extra = {}) {
+  const attribution = getAttribution();
+  return {
+    page_title: document.title,
+    page_path: window.location.pathname,
+    source_page: attribution.sourcePage || "",
+    landing_page: attribution.landingPage || "",
+    utm_source: attribution.utm_source || "",
+    utm_medium: attribution.utm_medium || "",
+    utm_campaign: attribution.utm_campaign || "",
+    utm_content: attribution.utm_content || "",
+    utm_term: attribution.utm_term || "",
+    campaign_id: attribution.campaign_id || "",
+    adset_id: attribution.adset_id || "",
+    ad_id: attribution.ad_id || "",
+    placement: attribution.placement || "",
+    ...extra,
+  };
+}
+
+function trackMetaEvent(eventName, params = {}, options = {}) {
+  if (!window.fbq) return;
+
+  const eventType = options.standard ? "track" : "trackCustom";
+  window.fbq(eventType, eventName, getTrackingParams(params));
+}
 
 function rewriteWhatsAppLinks() {
   const url = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(WA_MESSAGE)}`;
@@ -21,6 +151,12 @@ function rewriteWhatsAppLinks() {
     el.setAttribute("href", url);
     el.setAttribute("target", "_blank");
     el.setAttribute("rel", "noopener noreferrer");
+    el.addEventListener("click", () => {
+      trackMetaEvent("WhatsAppClick", {
+        link_text: getElementText(el),
+        destination: "whatsapp",
+      });
+    });
   });
 }
 
@@ -49,6 +185,27 @@ function rewriteSocialLinks() {
     el.setAttribute("aria-disabled", "true");
     el.setAttribute("title", "Facebook page to be created");
     el.addEventListener("click", (event) => event.preventDefault());
+  });
+}
+
+function initCalendlyButtons() {
+  document.querySelectorAll('[data-calendly="1"]').forEach((el) => {
+    el.addEventListener("click", (event) => {
+      event.preventDefault();
+      const calendlyUrl = el.getAttribute("data-calendly-url") || CALENDLY_URL;
+
+      trackMetaEvent("CalendlyClick", {
+        calendly_url: calendlyUrl,
+        link_text: getElementText(el),
+      });
+
+      if (window.Calendly && typeof window.Calendly.initPopupWidget === "function") {
+        window.Calendly.initPopupWidget({ url: calendlyUrl });
+        return;
+      }
+
+      window.open(calendlyUrl, "_blank", "noopener,noreferrer");
+    });
   });
 }
 
@@ -132,9 +289,21 @@ function initAdmissionsForm() {
   const steps = Array.from(form.querySelectorAll("[data-step]"));
   const progressSegments = document.querySelectorAll("[data-progress]");
   const stepLabels = document.querySelectorAll("[data-step-label]");
+  const submitButton = form.querySelector('button[type="submit"]');
+  const submitError = document.getElementById("lead-submit-error");
+  const originalSubmitText = submitButton ? submitButton.textContent : "";
   let current = 0;
+  let formStarted = false;
 
-  const state = { fullName: "", phone: "", neet: "", drops: "", budget: "", year: "" };
+  const state = {
+    fullName: "",
+    phone: "",
+    neet: "",
+    drops: "",
+    budget: "",
+    year: "",
+    parentCallTime: "",
+  };
 
   function show(idx) {
     steps.forEach((s, i) => {
@@ -152,13 +321,19 @@ function initAdmissionsForm() {
     current = idx;
   }
 
+  function markFormStarted() {
+    if (formStarted) return;
+    formStarted = true;
+    trackMetaEvent("LeadFormStart", { form_id: form.id });
+  }
+
   function validateStep(idx) {
     const stepEl = steps[idx];
     const inputs = stepEl.querySelectorAll("input[required], select[required]");
     let valid = true;
     inputs.forEach((input) => {
       const err = input.parentElement.querySelector("[data-error]");
-      if (!input.value.trim()) {
+      if (!input.value.trim() || !input.checkValidity()) {
         input.classList.add("border-error-red", "border-2");
         input.classList.remove("border-border-subtle");
         if (err) err.classList.remove("hidden");
@@ -175,7 +350,19 @@ function initAdmissionsForm() {
   function captureStep(idx) {
     const stepEl = steps[idx];
     stepEl.querySelectorAll("[name]").forEach((input) => {
-      state[input.name] = input.value;
+      if (Object.prototype.hasOwnProperty.call(state, input.name)) {
+        state[input.name] = input.value;
+      }
+    });
+  }
+
+  function captureAllSteps() {
+    steps.forEach((_, idx) => captureStep(idx));
+  }
+
+  function resetState() {
+    Object.keys(state).forEach((key) => {
+      state[key] = "";
     });
   }
 
@@ -183,17 +370,88 @@ function initAdmissionsForm() {
     const reviewEl = document.getElementById("review-summary");
     if (!reviewEl) return;
     reviewEl.innerHTML = `
-      <div class="flex justify-between py-3 border-b border-border-subtle"><span class="text-muted">Name</span><span class="font-bold">${escapeHtml(state.fullName)}</span></div>
-      <div class="flex justify-between py-3 border-b border-border-subtle"><span class="text-muted">Phone</span><span class="font-bold">${escapeHtml(state.phone)}</span></div>
-      <div class="flex justify-between py-3 border-b border-border-subtle"><span class="text-muted">NEET Score</span><span class="font-bold">${escapeHtml(state.neet)}</span></div>
-      <div class="flex justify-between py-3 border-b border-border-subtle"><span class="text-muted">Drop Years</span><span class="font-bold">${escapeHtml(state.drops)}</span></div>
-      <div class="flex justify-between py-3 border-b border-border-subtle"><span class="text-muted">Total Budget</span><span class="font-bold">${escapeHtml(state.budget)}</span></div>
-      <div class="flex justify-between py-3"><span class="text-muted">Target Year</span><span class="font-bold">${escapeHtml(state.year)}</span></div>
+      <div class="flex justify-between gap-4 py-3 border-b border-border-subtle"><span class="text-muted">Name</span><span class="font-bold text-right">${escapeHtml(state.fullName)}</span></div>
+      <div class="flex justify-between gap-4 py-3 border-b border-border-subtle"><span class="text-muted">Phone</span><span class="font-bold text-right">${escapeHtml(state.phone)}</span></div>
+      <div class="flex justify-between gap-4 py-3 border-b border-border-subtle"><span class="text-muted">NEET Score</span><span class="font-bold text-right">${escapeHtml(state.neet)}</span></div>
+      <div class="flex justify-between gap-4 py-3 border-b border-border-subtle"><span class="text-muted">Drop Years</span><span class="font-bold text-right">${escapeHtml(state.drops)}</span></div>
+      <div class="flex justify-between gap-4 py-3 border-b border-border-subtle"><span class="text-muted">Total Budget</span><span class="font-bold text-right">${escapeHtml(state.budget)}</span></div>
+      <div class="flex justify-between gap-4 py-3 border-b border-border-subtle"><span class="text-muted">Target Year</span><span class="font-bold text-right">${escapeHtml(state.year)}</span></div>
+      <div class="flex justify-between gap-4 py-3"><span class="text-muted">Parent Call Time</span><span class="font-bold text-right">${escapeHtml(state.parentCallTime)}</span></div>
     `;
   }
 
+  function buildLeadPayload() {
+    const attribution = getAttribution();
+    return {
+      submittedAt: new Date().toISOString(),
+      fullName: state.fullName.trim(),
+      phone: state.phone.trim(),
+      neet: state.neet.trim(),
+      drops: state.drops,
+      budget: state.budget,
+      year: state.year,
+      parentCallTime: state.parentCallTime,
+      leadStatus: "new",
+      followUpOwner: "Dr. Shivang",
+      notes: "",
+      finalOutcome: "",
+      aiSummary: "",
+      sourcePage: attribution.sourcePage || "",
+      landingPage: attribution.landingPage || "",
+      referrer: attribution.referrer || "",
+      attribution,
+    };
+  }
+
+  async function submitLead(payload) {
+    if (!LEAD_ENDPOINT_URL) {
+      throw new Error("Lead endpoint is not configured.");
+    }
+
+    const response = await fetch(LEAD_ENDPOINT_URL, {
+      method: "POST",
+      headers: { "Content-Type": "text/plain;charset=utf-8" },
+      body: JSON.stringify(payload),
+    });
+
+    let result = null;
+    try {
+      result = await response.json();
+    } catch (err) {
+      result = null;
+    }
+
+    if (!response.ok || (result && result.ok === false)) {
+      throw new Error((result && result.error) || "Lead submission failed.");
+    }
+
+    return result || { ok: true };
+  }
+
+  function setSubmitting(isSubmitting) {
+    if (!submitButton) return;
+    submitButton.disabled = isSubmitting;
+    submitButton.classList.toggle("opacity-70", isSubmitting);
+    submitButton.classList.toggle("cursor-wait", isSubmitting);
+    submitButton.textContent = isSubmitting ? "Submitting..." : originalSubmitText;
+  }
+
+  function showSubmitError(message) {
+    if (!submitError) return;
+    const messageEl = submitError.querySelector("[data-lead-error-message]");
+    if (messageEl) messageEl.textContent = message;
+    submitError.classList.remove("hidden");
+  }
+
+  function hideSubmitError() {
+    if (submitError) submitError.classList.add("hidden");
+  }
+
+  form.addEventListener("input", markFormStarted);
+
   form.querySelectorAll("[data-next]").forEach((btn) => {
     btn.addEventListener("click", () => {
+      markFormStarted();
       if (!validateStep(current)) return;
       captureStep(current);
       if (current === steps.length - 2) renderReview();
@@ -212,12 +470,37 @@ function initAdmissionsForm() {
     });
   });
 
-  form.addEventListener("submit", (e) => {
+  form.addEventListener("submit", async (e) => {
     e.preventDefault();
-    // No backend wired up. When ready, POST `state` to Formspree / Netlify Forms / a real endpoint.
-    const modal = document.getElementById("success-modal");
-    if (modal) modal.classList.remove("hidden");
-    form.reset();
+    captureAllSteps();
+    hideSubmitError();
+    setSubmitting(true);
+
+    const payload = buildLeadPayload();
+
+    try {
+      await submitLead(payload);
+      trackMetaEvent("LeadSubmitted", {
+        form_id: form.id,
+        target_year: payload.year,
+        budget: payload.budget,
+      });
+      trackMetaEvent("Lead", { form_id: form.id }, { standard: true });
+
+      const modal = document.getElementById("success-modal");
+      if (modal) modal.classList.remove("hidden");
+      form.reset();
+      resetState();
+      populateAttributionFields(getAttribution());
+    } catch (err) {
+      showSubmitError("I couldn't save this form right now. Please message Dr. Shivang directly on WhatsApp so your query is not missed.");
+      trackMetaEvent("LeadSubmitFailed", {
+        form_id: form.id,
+        error_message: err.message || "unknown",
+      });
+    } finally {
+      setSubmitting(false);
+    }
   });
 
   const closeBtn = document.getElementById("modal-close");
@@ -231,8 +514,16 @@ function initAdmissionsForm() {
   show(0);
 }
 
+function getElementText(el) {
+  return (el.textContent || "").replace(/\s+/g, " ").trim().slice(0, 120);
+}
+
 function escapeHtml(str) {
   return String(str).replace(/[&<>"']/g, (c) => ({
-    "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#39;",
   })[c]);
 }

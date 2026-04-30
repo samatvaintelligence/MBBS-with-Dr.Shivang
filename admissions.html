@@ -85,6 +85,17 @@ tailwind.config = {
       </div>
 
       <form id="admissions-form" novalidate>
+        <div class="hidden" aria-hidden="true">
+          <input type="hidden" name="utm_source" data-attribution-field="utm_source"/>
+          <input type="hidden" name="utm_medium" data-attribution-field="utm_medium"/>
+          <input type="hidden" name="utm_campaign" data-attribution-field="utm_campaign"/>
+          <input type="hidden" name="utm_content" data-attribution-field="utm_content"/>
+          <input type="hidden" name="utm_term" data-attribution-field="utm_term"/>
+          <input type="hidden" name="campaign_id" data-attribution-field="campaign_id"/>
+          <input type="hidden" name="adset_id" data-attribution-field="adset_id"/>
+          <input type="hidden" name="ad_id" data-attribution-field="ad_id"/>
+          <input type="hidden" name="placement" data-attribution-field="placement"/>
+        </div>
 
         <div data-step="0" class="space-y-6">
           <h2 class="font-display text-h1 font-black tracking-tighter mb-2">Tell us about you</h2>
@@ -146,6 +157,18 @@ tailwind.config = {
             </select>
             <p data-error class="hidden text-[13px] text-error-red font-medium mt-2">Pick a target intake year.</p>
           </div>
+          <div>
+            <label class="block font-label text-xs uppercase tracking-widest mb-2" for="parentCallTime">Best time for a parent call</label>
+            <select id="parentCallTime" name="parentCallTime" required class="form-input w-full h-14 px-5 rounded-[24px] bg-surface border border-border-subtle font-body-lg appearance-none">
+              <option value="">Select a time</option>
+              <option value="Today">Today</option>
+              <option value="Tomorrow morning">Tomorrow morning</option>
+              <option value="Tomorrow evening">Tomorrow evening</option>
+              <option value="Weekend">Weekend</option>
+              <option value="Not sure yet">Not sure yet</option>
+            </select>
+            <p data-error class="hidden text-[13px] text-error-red font-medium mt-2">Pick the best time for a parent call.</p>
+          </div>
           <div class="pt-4 flex gap-3">
             <button type="button" data-prev class="h-14 px-6 border border-border-subtle rounded-full font-button uppercase tracking-widest hover:bg-surface transition-all">Back</button>
             <button type="button" data-next class="flex-1 h-14 bg-primary text-white rounded-full font-button uppercase tracking-widest hover:bg-primary-container transition-all active:scale-[0.99] flex items-center justify-center gap-2">
@@ -175,6 +198,13 @@ tailwind.config = {
         </div>
 
       </form>
+
+      <div id="lead-submit-error" class="hidden mt-6 rounded-[24px] border border-error-red/30 bg-error-container p-5">
+        <p data-lead-error-message class="text-on-error-container text-body-sm font-bold">I couldn't save this form right now.</p>
+        <a data-wa="1" href="#" class="mt-4 inline-flex h-11 px-5 items-center justify-center rounded-full bg-whatsapp-green text-white font-button uppercase tracking-widest text-xs">
+          Message Dr. Shivang on WhatsApp
+        </a>
+      </div>
 
       <div class="my-10 flex items-center gap-4">
         <div class="flex-1 h-px bg-border-subtle"></div>
@@ -207,7 +237,7 @@ tailwind.config = {
     <p class="text-muted mb-2">Dr. Shivang reviews every submission personally.</p>
     <p class="text-muted mb-8">Lock in a time that works for you — pick a slot directly on his calendar.</p>
     <div class="flex flex-col gap-3">
-      <button type="button" onclick="Calendly.initPopupWidget({url:'https://calendly.com/samatvaintelligence/30min'});return false;" class="h-12 bg-primary text-white rounded-full font-button uppercase tracking-widest flex items-center justify-center gap-2 hover:bg-primary-container transition-all">
+      <button type="button" data-calendly="1" data-calendly-url="https://calendly.com/samatvaintelligence/30min" class="h-12 bg-primary text-white rounded-full font-button uppercase tracking-widest flex items-center justify-center gap-2 hover:bg-primary-container transition-all">
         <span class="material-symbols-outlined text-base">calendar_month</span> Book a call with Dr. Shivang
       </button>
       <a data-wa="1" href="#" class="h-12 bg-whatsapp-green text-white rounded-full font-button uppercase tracking-widest flex items-center justify-center gap-2 hover:opacity-90 transition-all">
