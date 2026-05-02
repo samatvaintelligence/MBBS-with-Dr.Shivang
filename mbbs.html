@@ -36,43 +36,55 @@ tailwind.config = {
 ::-webkit-scrollbar{width:8px;}
 ::-webkit-scrollbar-track{background:#f4f4f5;}
 ::-webkit-scrollbar-thumb{background:#b90039;border-radius:4px;}
+.no-scrollbar{-ms-overflow-style:none;scrollbar-width:none;}
+.no-scrollbar::-webkit-scrollbar{display:none;}
 </style>
 <script defer src="assets/app.js"></script>
 </head>
 <body class="bg-background text-on-surface font-body-lg">
 <header class="bg-white border-b-2 border-zinc-900 top-0 z-50 fixed w-full">
-  <div class="flex justify-between items-center h-20 px-8 w-full max-w-screen-2xl mx-auto">
-    <a href="index.html" class="text-2xl font-black tracking-tighter text-zinc-950 font-display">MBBS WITH DR. SHIVANG</a>
-    <nav class="hidden md:flex items-center gap-8 font-['Epilogue'] uppercase tracking-tight font-bold text-sm">
+  <div class="grid grid-cols-[1fr_auto_1fr] items-center h-20 px-5 md:px-8 w-full max-w-screen-2xl mx-auto">
+    <a href="index.html" class="col-start-1 justify-self-start text-xl sm:text-2xl leading-tight font-black tracking-tighter text-zinc-950 font-display">MBBS WITH DR. SHIVANG</a>
+    <nav class="hidden md:flex col-start-2 items-center justify-center gap-8 justify-self-center font-['Epilogue'] uppercase tracking-tight font-bold text-sm">
       <a class="text-rose-600 border-b-2 border-rose-600 pb-1" href="mbbs.html">MBBS</a>
       <a class="text-zinc-600 hover:text-zinc-950 transition-colors" href="life.html">Life in Russia</a>
       <a class="text-zinc-600 hover:text-zinc-950 transition-colors" href="admissions.html">Admissions</a>
     </nav>
-    <div class="flex items-center gap-3" aria-label="Social media">
-      <a data-social="instagram" href="#" aria-label="Instagram" class="w-12 h-12 rounded-full border border-zinc-200 bg-white flex items-center justify-center hover:border-rose-600 hover:scale-105 active:scale-95 transition-all">
-        <img src="assets/icons/instagram.svg" alt="" class="w-6 h-6"/>
+    <div class="col-start-3 flex items-center gap-3 justify-self-end" aria-label="Social media">
+      <a data-social="instagram" href="#" aria-label="Instagram" class="w-11 h-11 sm:w-12 sm:h-12 rounded-full border border-zinc-200 bg-white flex items-center justify-center hover:border-rose-600 hover:scale-105 active:scale-95 transition-all">
+        <img src="assets/icons/instagram.svg" alt="" class="w-5 h-5 sm:w-6 sm:h-6"/>
       </a>
-      <a data-social="facebook" href="#" aria-label="Facebook page to be created" class="w-12 h-12 rounded-full border border-zinc-200 bg-white flex items-center justify-center opacity-50 grayscale cursor-not-allowed transition-all">
-        <img src="assets/icons/facebook.svg" alt="" class="w-6 h-6"/>
+      <a data-social="facebook" href="https://www.facebook.com/share/18g92rEW95/?mibextid=wwXIfr" aria-label="Facebook" class="w-11 h-11 sm:w-12 sm:h-12 rounded-full border border-zinc-200 bg-white flex items-center justify-center hover:border-rose-600 hover:scale-105 active:scale-95 transition-all">
+        <img src="assets/icons/facebook.svg" alt="" class="w-5 h-5 sm:w-6 sm:h-6"/>
       </a>
     </div>
   </div>
+  <nav class="md:hidden border-t border-zinc-200 px-4 pb-3" aria-label="Mobile primary navigation">
+    <div class="grid grid-cols-3 gap-2">
+      <a class="h-10 rounded-full bg-primary text-white flex items-center justify-center font-['Epilogue'] text-[11px] font-bold uppercase tracking-tight" href="mbbs.html">MBBS</a>
+      <a class="h-10 rounded-full border border-zinc-200 flex items-center justify-center font-['Epilogue'] text-[11px] font-bold uppercase tracking-tight text-zinc-700" href="life.html">Life</a>
+      <a class="h-10 rounded-full border border-zinc-200 flex items-center justify-center font-['Epilogue'] text-[11px] font-bold uppercase tracking-tight text-zinc-700" href="admissions.html">Admissions</a>
+    </div>
+  </nav>
 </header>
 
-<main class="pt-20">
-  <section class="relative h-[450px] flex items-center justify-center overflow-hidden bg-zinc-950">
+<main class="pt-32 md:pt-20">
+  <section class="relative min-h-[420px] md:h-[450px] py-16 md:py-0 flex items-center justify-center overflow-hidden bg-zinc-950">
     <div class="absolute inset-0 z-0">
       <img class="w-full h-full object-cover opacity-40" alt="" src="assets/img/graduation-group.jpg"/>
     </div>
-    <div class="relative z-10 text-center px-8">
+    <div class="relative z-10 text-center px-5 md:px-8">
       <span class="bg-primary text-white px-4 py-1 rounded-full font-label text-xs uppercase tracking-widest mb-4 inline-block">Direct Admissions · 2026 Intake</span>
-      <h1 class="font-display text-white text-[56px] leading-[1.1] font-black tracking-tighter mb-4 max-w-4xl uppercase">MBBS in Russia, Mentored by Someone Who's Done It</h1>
-      <p class="text-zinc-300 text-lg max-w-2xl mx-auto font-medium">NMC + WHO recognized government universities. Direct admission with NEET — no entrance test. End-to-end mentorship through to FMGE/NExT.</p>
+      <h1 class="font-display text-white text-[38px] sm:text-[46px] md:text-[56px] leading-[1.04] md:leading-[1.1] font-black tracking-tighter mb-4 max-w-4xl uppercase">MBBS in Russia, Mentored by Someone Who's Done It</h1>
+      <p class="text-zinc-300 text-base md:text-lg max-w-2xl mx-auto font-medium">NMC + WHO recognized government universities. Direct admission with NEET — no entrance test. End-to-end mentorship through to FMGE/NExT.</p>
+      <a href="admissions.html" class="mt-6 md:hidden inline-flex h-12 px-6 bg-[#25D366] text-white rounded-full font-button text-xs uppercase tracking-widest items-center justify-center gap-3">
+        <img src="assets/icons/whatsapp.svg" alt="" class="w-5 h-5"/> I want to be a doctor
+      </a>
     </div>
   </section>
 
-  <nav class="sticky top-20 z-40 bg-white border-b border-border-subtle shadow-sm">
-    <div class="max-w-screen-2xl mx-auto px-8 flex gap-12 h-16 items-center overflow-x-auto whitespace-nowrap">
+  <nav class="sticky top-32 md:top-20 z-40 bg-white border-b border-border-subtle shadow-sm">
+    <div class="no-scrollbar max-w-screen-2xl mx-auto px-4 md:px-8 flex gap-6 md:gap-12 h-14 md:h-16 items-center overflow-x-auto whitespace-nowrap">
       <a class="font-button text-primary border-b-2 border-primary h-full flex items-center" href="#universities">Universities</a>
       <a class="font-button text-muted hover:text-on-surface h-full flex items-center transition-colors" href="#details">Course Details</a>
       <a class="font-button text-muted hover:text-on-surface h-full flex items-center transition-colors" href="#fees">Fees</a>
@@ -82,25 +94,25 @@ tailwind.config = {
     </div>
   </nav>
 
-  <section class="py-24 px-8 max-w-screen-2xl mx-auto" id="universities">
-    <div class="flex justify-between items-end mb-12">
+  <section class="py-14 md:py-24 px-5 md:px-8 max-w-screen-2xl mx-auto" id="universities">
+    <div class="flex justify-between items-end mb-8 md:mb-12">
       <div class="max-w-2xl">
         <span class="inline-block bg-primary/10 text-primary font-label text-xs uppercase tracking-widest px-3 py-1 rounded-full mb-4">2026 Featured Intake</span>
-        <h2 class="font-display text-display text-on-surface mb-4">Where you'll study</h2>
+        <h2 class="font-display text-[32px] md:text-display text-on-surface mb-4">Where you'll study</h2>
         <p class="text-muted text-body-lg">Dr. Shivang's 2026 cohort heads to Chuvash State University in Cheboksary — the same kind of Russian government medical university he graduated from. Other partner universities are available on request based on your NEET score and budget.</p>
       </div>
     </div>
 
     <!-- Featured: Chuvash State University -->
     <div class="bg-zinc-950 rounded-3xl overflow-hidden border border-zinc-800 mb-8 grid grid-cols-1 lg:grid-cols-2">
-      <div class="h-80 lg:h-auto relative">
-        <img class="w-full h-full object-cover" alt="Dr. Shivang Gupta in graduation gown at Chuvash State University, Cheboksary" src="assets/img/shivang-graduation-chuvash.jpg"/>
+      <div class="h-64 md:h-80 lg:h-auto relative">
+        <img class="w-full h-full object-cover" alt="Chuvash State University campus building in Cheboksary" src="assets/img/chuvash-state-university-campus.jpg"/>
         <div class="absolute top-6 left-6 bg-primary px-4 py-1.5 rounded-full font-label text-xs uppercase tracking-widest text-white shadow-lg">2026 Featured · Cheboksary</div>
       </div>
-      <div class="p-12 flex flex-col justify-center">
+      <div class="p-6 md:p-12 flex flex-col justify-center">
         <h3 class="font-display text-white text-3xl md:text-4xl font-black tracking-tighter mb-3 uppercase">Chuvash State University</h3>
         <p class="text-zinc-400 text-body-lg mb-6">Government university in Cheboksary — the Volga-region capital of the Chuvash Republic. WHO + NMC recognized, English-medium MBBS, with a long-running Indian student community Dr. Shivang knows personally.</p>
-        <div class="grid grid-cols-3 gap-4 mb-8">
+        <div class="grid grid-cols-3 gap-3 md:gap-4 mb-8">
           <div><div class="text-primary font-display text-2xl font-black">₹9.12L</div><div class="text-[10px] uppercase tracking-widest font-label text-zinc-500 mt-1">First-year all-in</div></div>
           <div><div class="text-primary font-display text-2xl font-black">₹3.35L</div><div class="text-[10px] uppercase tracking-widest font-label text-zinc-500 mt-1">Per year after</div></div>
           <div><div class="text-primary font-display text-2xl font-black">5.8 yrs</div><div class="text-[10px] uppercase tracking-widest font-label text-zinc-500 mt-1">Total course</div></div>
@@ -117,74 +129,61 @@ tailwind.config = {
     <!-- Other supported universities -->
     <div class="mb-6">
       <h3 class="font-display text-h2 text-on-surface font-bold mb-2">Also supported</h3>
-      <p class="text-muted text-body-sm">Alternate universities Dr. Shivang places students into based on profile, budget, and city preference.</p>
+      <p class="text-muted text-body-sm">Alternate routes Dr. Shivang discusses based on profile, budget, and city preference.</p>
     </div>
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-gutter">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-gutter">
       <div class="bg-surface rounded-xl overflow-hidden border border-border-subtle group hover:border-primary transition-all duration-300">
-        <div class="h-48 overflow-hidden relative">
-          <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" alt="Kazan Federal University" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBrpdDnjlyccNsQWPQjjtCGBCpUuUB3aTjczcxqdTerMtZ8jCZw6MHGEuwexQ8i8MdpCnFq_T1c02cQuCiZ-Cky7EYUlGatJZFjbjyzfWJVbXRPS04P_eYXc_W00bLcMv4yTwn66TUAdyeSVONW4dVx8Bm9B_2XcTgDatPmtodrKuNhd99awf7YqXWiT7RphwOgJtsYTGF5y0DltqMCWVSk2L1LuQ0BfWPrXunFtSOap1YDY21_zmomWON6OYDQHL8ps6vaoTzD7Os"/>
-          <div class="absolute top-4 left-4 bg-white px-3 py-1 rounded font-label text-xs uppercase tracking-wider shadow-sm">Kazan</div>
-        </div>
-        <div class="p-6 flex flex-col gap-4">
-          <div>
-            <h3 class="font-h2 text-lg mb-2">Kazan Federal University</h3>
-            <p class="text-muted text-body-sm">Top-5 in Russia. Higher fee tier — best for students with strong NEET scores who want a metro-city experience.</p>
-          </div>
-          <a href="admissions.html" class="inline-flex items-center gap-1 text-primary font-button text-xs uppercase tracking-widest hover:gap-2 transition-all">Get in touch to know more <span class="material-symbols-outlined text-sm">arrow_forward</span></a>
-        </div>
-      </div>
-      <div class="bg-surface rounded-xl overflow-hidden border border-border-subtle group hover:border-primary transition-all duration-300">
-        <div class="h-48 overflow-hidden relative">
-          <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" alt="Pirogov Medical University" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCrJqMWzmjh-G_sfcuscOee5GW3h9rs1l9cb-3ObaxEfemo_49flAH3sVTrEcaL6whzXfkXtbBedO0NTwneoUtWuDafu1h_G0M94tPypAuNUAC7UqVNsrdCgjbq0WbcjSadHMmEE-Dr_sZ_fZ_2lElH3gyvjyP4TfOXLkxJLm1NSvODTHxp4bkiDMCEqv2kUchKjLj1Ht9SZoXj1FHQNJJ6jP7METdcGOF4og8Dkt9Lt7L9ZT3Dot99wHKN50ETN8LrsiiXZAFz1-o"/>
+        <div class="h-72 md:h-80 overflow-hidden relative">
+          <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" alt="RUDN University campus in Moscow" src="assets/img/moscow-rudn-university.jpg"/>
           <div class="absolute top-4 left-4 bg-white px-3 py-1 rounded font-label text-xs uppercase tracking-wider shadow-sm">Moscow</div>
         </div>
         <div class="p-6 flex flex-col gap-4">
           <div>
-            <h3 class="font-h2 text-lg mb-2">Pirogov Medical University</h3>
-            <p class="text-muted text-body-sm">Moscow-based, research-leaning. Strong Indian community. Higher cost of living than smaller cities.</p>
+            <h3 class="font-h2 text-lg mb-2">Moscow</h3>
+            <p class="text-muted text-body-sm">Metro-city route for students who specifically want a Moscow campus environment and are comfortable with a premium city. I discuss this only after checking whether the family budget and expectations fit.</p>
           </div>
-          <a href="admissions.html" class="inline-flex items-center gap-1 text-primary font-button text-xs uppercase tracking-widest hover:gap-2 transition-all">Get in touch to know more <span class="material-symbols-outlined text-sm">arrow_forward</span></a>
+          <a href="admissions.html" class="inline-flex items-center gap-2 text-primary font-button text-xs uppercase tracking-widest hover:gap-3 transition-all"><img src="assets/icons/whatsapp.svg" alt="" class="w-4 h-4"/> I want to be a doctor</a>
         </div>
       </div>
       <div class="bg-surface rounded-xl overflow-hidden border border-border-subtle group hover:border-primary transition-all duration-300">
-        <div class="h-48 overflow-hidden relative">
-          <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" alt="Pavlov First Medical" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDZZlzhD9cMFllwaKjR88CEiJv6748JP7RR8IQsmQZafw_A7fotiGqYcJm3_FfsupuiuKMYf2ZJq_tn3fa9aqAabF52SZzh76A5JOc2781iHi9z0koN1kRrZJ0QYVaWabGoDqKNpDkb9MC6QK7B2TlsRaRrCb6nwZXn8nqf9CQPEC-UWf-0UoFxLaCmtD_sff3QnNG1AO76FkyW8pSFPURMGv5FE4mx3mNrAgI5pkbGR7JgIoscCaQhtWrYS6Y4NN41KTPTIbIlGDE"/>
-          <div class="absolute top-4 left-4 bg-white px-3 py-1 rounded font-label text-xs uppercase tracking-wider shadow-sm">St. Petersburg</div>
+        <div class="h-72 md:h-80 overflow-hidden relative">
+          <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" alt="Pskov State University campus building" src="assets/img/pskov-state-university.jpg"/>
+          <div class="absolute top-4 left-4 bg-white px-3 py-1 rounded font-label text-xs uppercase tracking-wider shadow-sm">Pskov</div>
         </div>
         <div class="p-6 flex flex-col gap-4">
           <div>
-            <h3 class="font-h2 text-lg mb-2">Pavlov First Medical</h3>
-            <p class="text-muted text-body-sm">Historical St. Petersburg medical school with strong clinical placements. Premium tier.</p>
+            <h3 class="font-h2 text-lg mb-2">Pskov</h3>
+            <p class="text-muted text-body-sm">Quieter city route for students who want a more controlled, practical Russian university environment outside Moscow. I discuss it when the priority is affordability, campus life, and a stable MBBS path.</p>
           </div>
-          <a href="admissions.html" class="inline-flex items-center gap-1 text-primary font-button text-xs uppercase tracking-widest hover:gap-2 transition-all">Get in touch to know more <span class="material-symbols-outlined text-sm">arrow_forward</span></a>
+          <a href="admissions.html" class="inline-flex items-center gap-2 text-primary font-button text-xs uppercase tracking-widest hover:gap-3 transition-all"><img src="assets/icons/whatsapp.svg" alt="" class="w-4 h-4"/> I want to be a doctor</a>
         </div>
       </div>
     </div>
   </section>
 
   <!-- Course Details -->
-  <section class="py-24 bg-surface px-8" id="details">
+  <section class="py-14 md:py-24 bg-surface px-5 md:px-8" id="details">
     <div class="max-w-screen-2xl mx-auto">
       <div class="grid grid-cols-1 md:grid-cols-12 gap-8 h-auto md:h-[600px]">
-        <div class="md:col-span-8 bg-white border border-border-subtle p-12 rounded-3xl relative overflow-hidden flex flex-col justify-end">
+        <div class="md:col-span-8 bg-white border border-border-subtle p-6 md:p-12 rounded-3xl relative overflow-hidden flex flex-col justify-end min-h-[420px] md:min-h-0">
           <img class="absolute inset-0 w-full h-full object-cover opacity-10" alt="" src="assets/img/anatomy-class.jpg"/>
           <div class="relative z-10">
-            <h2 class="font-display text-4xl font-black mb-6 uppercase tracking-tighter">6-Year MBBS, Bologna-standard</h2>
+            <h2 class="font-display text-3xl md:text-4xl font-black mb-6 uppercase tracking-tighter">6-Year MBBS, Bologna-standard</h2>
             <p class="text-muted text-body-lg max-w-xl mb-8">Three years of pre-clinical foundation, three years of clinical rotations in multi-specialty teaching hospitals. English-medium throughout, with Russian taught alongside so you can talk to patients from year 3.</p>
-            <div class="flex gap-12 flex-wrap">
+            <div class="flex gap-6 md:gap-12 flex-wrap">
               <div><div class="text-primary font-display text-3xl font-black">6 yrs</div><div class="text-xs uppercase tracking-widest font-label text-muted">Course Length</div></div>
               <div><div class="text-primary font-display text-3xl font-black">English</div><div class="text-xs uppercase tracking-widest font-label text-muted">Medium of Instruction</div></div>
               <div><div class="text-primary font-display text-3xl font-black">NMC + WHO</div><div class="text-xs uppercase tracking-widest font-label text-muted">Recognized</div></div>
             </div>
           </div>
         </div>
-        <div class="md:col-span-4 grid grid-rows-2 gap-8">
-          <div class="bg-primary p-8 rounded-3xl flex flex-col justify-center text-white">
+        <div class="md:col-span-4 grid grid-rows-2 gap-6 md:gap-8">
+          <div class="bg-primary p-6 md:p-8 rounded-3xl flex flex-col justify-center text-white">
             <span class="material-symbols-outlined text-4xl mb-4">school</span>
             <h3 class="font-display text-xl font-bold mb-2 uppercase">FMGE / NExT support</h3>
             <p class="text-white/80 text-sm">Mentored preparation for the licensing exam you'll need to practice in India — guidance starts in your 3rd year.</p>
           </div>
-          <div class="bg-zinc-950 p-8 rounded-3xl flex flex-col justify-center text-white">
+          <div class="bg-zinc-950 p-6 md:p-8 rounded-3xl flex flex-col justify-center text-white">
             <span class="material-symbols-outlined text-4xl mb-4" style="font-variation-settings: 'FILL' 1;">restaurant</span>
             <h3 class="font-display text-xl font-bold mb-2 uppercase">Indian mess + community</h3>
             <p class="text-white/80 text-sm">Indian food, Indian batchmates, the festivals you grew up with. You won't be eating alone in a foreign country.</p>
@@ -195,20 +194,20 @@ tailwind.config = {
   </section>
 
   <!-- Fees -->
-  <section class="py-24 px-8 bg-white" id="fees">
+  <section class="py-14 md:py-24 px-5 md:px-8 bg-white" id="fees">
     <div class="max-w-screen-2xl mx-auto">
       <div class="max-w-3xl mb-10">
         <span class="inline-block bg-primary/10 text-primary font-label text-xs uppercase tracking-widest px-3 py-1 rounded-full mb-4">Chuvash · 2025-26</span>
-        <h2 class="font-display text-display text-on-surface mb-4">What it actually costs</h2>
+        <h2 class="font-display text-[32px] md:text-display text-on-surface mb-4">What it actually costs</h2>
         <p class="text-muted text-body-lg">I’m showing both numbers because the tuition fee alone is not the full first-year budget. This way you can compare the official university fee with the real amount a family should plan for.</p>
       </div>
 
       <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 mb-10">
-        <div class="inline-flex flex-col sm:flex-row gap-2 bg-surface border border-border-subtle rounded-full p-2 w-fit" role="tablist" aria-label="Fee view">
-          <button type="button" data-fee-view="official" aria-selected="true" class="h-12 px-6 rounded-full bg-zinc-950 text-white shadow-sm font-button uppercase tracking-widest transition-all" role="tab">
+        <div class="inline-flex flex-col sm:flex-row gap-2 bg-surface border border-border-subtle rounded-[24px] sm:rounded-full p-2 w-full sm:w-fit" role="tablist" aria-label="Fee view">
+          <button type="button" data-fee-view="official" aria-selected="true" class="h-12 px-4 md:px-6 rounded-full bg-zinc-950 text-white shadow-sm font-button text-xs md:text-sm uppercase tracking-widest transition-all w-full sm:w-auto" role="tab">
             Official tuition + hostel
           </button>
-          <button type="button" data-fee-view="inclusive" aria-selected="false" class="h-12 px-6 rounded-full text-muted font-button uppercase tracking-widest transition-all" role="tab">
+          <button type="button" data-fee-view="inclusive" aria-selected="false" class="h-12 px-4 md:px-6 rounded-full text-muted font-button text-xs md:text-sm uppercase tracking-widest transition-all w-full sm:w-auto" role="tab">
             All-inclusive real cost
           </button>
         </div>
@@ -225,49 +224,52 @@ tailwind.config = {
 
       <div data-fee-panel="official" role="tabpanel">
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <div class="bg-zinc-950 text-white p-8 rounded-3xl">
+          <div class="bg-zinc-950 text-white p-6 md:p-8 rounded-3xl">
             <div class="font-label text-xs uppercase tracking-widest text-zinc-500 mb-2">Official tuition fee</div>
-            <div data-currency-amount data-rub="2,45,000" data-inr="₹2.70L" class="font-display text-5xl font-black text-primary mb-2">2,45,000</div>
+            <div data-currency-amount data-rub="2,45,000" data-inr="₹2.70L" class="font-display text-4xl md:text-5xl font-black text-primary mb-2">2,45,000</div>
             <p data-currency-unit data-rub="RUB / yr" data-inr="INR / yr" class="text-zinc-300 font-bold text-sm uppercase tracking-widest mb-4">RUB / yr</p>
             <p class="text-zinc-400 text-sm">This is the university-side tuition fee many consultants show first.</p>
           </div>
-          <div class="bg-surface border border-border-subtle p-8 rounded-3xl">
+          <div class="bg-surface border border-border-subtle p-6 md:p-8 rounded-3xl">
             <div class="font-label text-xs uppercase tracking-widest text-muted mb-2">Official hostel fee</div>
-            <div data-currency-amount data-rub="8,500" data-inr="₹9,350" class="font-display text-5xl font-black text-on-surface mb-2">8,500</div>
+            <div data-currency-amount data-rub="8,500" data-inr="₹9,350" class="font-display text-4xl md:text-5xl font-black text-on-surface mb-2">8,500</div>
             <p data-currency-unit data-rub="RUB / month" data-inr="INR / month" class="text-muted font-bold text-sm uppercase tracking-widest mb-4">RUB / month</p>
             <p class="text-muted text-sm">The PDF also lists years 2-6 hostel as 80,000 RUB annually.</p>
           </div>
-          <div class="bg-surface border border-border-subtle p-8 rounded-3xl">
+          <div class="bg-surface border border-border-subtle p-6 md:p-8 rounded-3xl">
             <div class="font-label text-xs uppercase tracking-widest text-muted mb-2">After first year</div>
-            <div class="font-display text-5xl font-black text-on-surface mb-2">₹3.35L<span class="text-2xl font-bold text-muted">/yr</span></div>
+            <div data-currency-amount data-rub="3,04,500" data-inr="₹3.35L" class="font-display text-4xl md:text-5xl font-black text-on-surface mb-2">3,04,500</div>
+            <p data-currency-unit data-rub="RUB / yr approx." data-inr="INR / yr" class="text-muted font-bold text-sm uppercase tracking-widest mb-4">RUB / yr approx.</p>
             <p class="text-muted text-sm">Approximate annual cost from year 2 onward, when one-time setup costs are over.</p>
           </div>
         </div>
 
-        <p class="text-xs text-muted italic mt-5">INR conversion shown at ~₹1.10/RUB. Exchange rate variation can shift the final INR amount by a few percent.</p>
+        <p class="text-xs text-muted italic mt-5">Toggle conversion shown at ~₹1.10/RUB. Exchange rate variation can shift the final INR amount by a few percent.</p>
       </div>
 
       <div data-fee-panel="inclusive" class="hidden" role="tabpanel">
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-10">
-          <div class="bg-zinc-950 text-white p-8 rounded-3xl">
+          <div class="bg-zinc-950 text-white p-6 md:p-8 rounded-3xl">
             <div class="font-label text-xs uppercase tracking-widest text-zinc-500 mb-2">First year all-in</div>
-            <div class="font-display text-5xl font-black text-primary mb-2">₹9.12L</div>
-            <p class="text-zinc-300 font-bold text-sm uppercase tracking-widest mb-4">+ ~₹35,000 flights</p>
+            <div data-currency-amount data-rub="8,29,500" data-inr="₹9.12L" class="font-display text-4xl md:text-5xl font-black text-primary mb-2">8,29,500</div>
+            <p data-currency-unit data-rub="RUB approx. + flights" data-inr="INR + ~₹35,000 flights" class="text-zinc-300 font-bold text-sm uppercase tracking-widest mb-4">RUB approx. + flights</p>
             <p class="text-zinc-400 text-sm">Includes first-year setup costs, documents, visa, medical, food, and arrival support.</p>
           </div>
-          <div class="bg-surface border border-border-subtle p-8 rounded-3xl">
+          <div class="bg-surface border border-border-subtle p-6 md:p-8 rounded-3xl">
             <div class="font-label text-xs uppercase tracking-widest text-muted mb-2">Years 2 – 6</div>
-            <div class="font-display text-5xl font-black text-on-surface mb-2">₹3.35L<span class="text-2xl font-bold text-muted">/yr</span></div>
+            <div data-currency-amount data-rub="3,04,500" data-inr="₹3.35L" class="font-display text-4xl md:text-5xl font-black text-on-surface mb-2">3,04,500</div>
+            <p data-currency-unit data-rub="RUB / yr approx." data-inr="INR / yr" class="text-muted font-bold text-sm uppercase tracking-widest mb-4">RUB / yr approx.</p>
             <p class="text-muted text-sm">Tuition + hostel only. Food is optional after the first year.</p>
           </div>
-          <div class="bg-surface border border-border-subtle p-8 rounded-3xl">
+          <div class="bg-surface border border-border-subtle p-6 md:p-8 rounded-3xl">
             <div class="font-label text-xs uppercase tracking-widest text-muted mb-2">Total · 5.8 Years</div>
-            <div class="font-display text-5xl font-black text-on-surface mb-2">₹25.85L</div>
+            <div data-currency-amount data-rub="23,50,000" data-inr="₹25.85L" class="font-display text-4xl md:text-5xl font-black text-on-surface mb-2">23,50,000</div>
+            <p data-currency-unit data-rub="RUB approx." data-inr="INR total" class="text-muted font-bold text-sm uppercase tracking-widest mb-4">RUB approx.</p>
             <p class="text-muted text-sm">Compared to ₹70L–1.5Cr at Indian private colleges — without the donation.</p>
           </div>
         </div>
 
-        <div class="bg-surface rounded-3xl border border-border-subtle p-8">
+        <div class="bg-surface rounded-3xl border border-border-subtle p-6 md:p-8">
           <div class="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-4 mb-8">
             <div>
               <h3 class="font-display text-h2 font-black mb-3 uppercase tracking-tight">What this includes</h3>
@@ -307,16 +309,15 @@ tailwind.config = {
         </div>
       </div>
 
-      <div class="mt-10 bg-zinc-950 rounded-3xl border border-zinc-800 p-8 md:p-10 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-8">
+      <div class="mt-10 bg-zinc-950 rounded-3xl border border-zinc-800 p-6 md:p-10 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-8">
         <div class="max-w-2xl">
           <span class="inline-block bg-primary/20 text-primary font-label text-xs uppercase tracking-widest px-3 py-1 rounded-full mb-4">Parent call</span>
-          <h3 class="font-display text-3xl font-black text-white tracking-tighter uppercase mb-3">Want me to explain the numbers to your parents?</h3>
+          <h3 class="font-display text-2xl md:text-3xl font-black text-white tracking-tighter uppercase mb-3">Want me to explain the numbers to your parents?</h3>
           <p class="text-zinc-400 text-body-sm">Most families need one clear conversation about total cost, safety, recognition, and what happens after landing. The first call is completely free.</p>
         </div>
-        <div class="flex flex-col sm:flex-row gap-3 shrink-0">
-          <a href="admissions.html?intent=parent-call" class="h-14 px-8 bg-primary text-white rounded-full font-button uppercase tracking-widest flex items-center justify-center hover:bg-primary-container transition-all">Book Parent Call</a>
-          <a data-wa="1" href="#" class="h-14 px-8 border border-white/30 text-white rounded-full font-button uppercase tracking-widest flex items-center justify-center gap-2 hover:bg-white/10 transition-all">
-            <span class="material-symbols-outlined">chat</span> Quick question?
+        <div class="flex shrink-0">
+          <a href="admissions.html" class="h-14 px-8 bg-[#25D366] text-white rounded-full font-button uppercase tracking-widest flex items-center justify-center gap-3 hover:brightness-95 transition-all">
+            <img src="assets/icons/whatsapp.svg" alt="" class="w-6 h-6"/> I want to be a doctor
           </a>
         </div>
       </div>
@@ -324,7 +325,7 @@ tailwind.config = {
   </section>
 
   <!-- Eligibility -->
-  <section class="bg-zinc-950 py-24 px-8" id="eligibility">
+  <section class="bg-zinc-950 py-14 md:py-24 px-5 md:px-8" id="eligibility">
     <div class="max-w-screen-2xl mx-auto max-w-2xl">
       <div class="flex items-center gap-4 mb-10">
         <div class="bg-primary p-3 rounded-xl"><span class="material-symbols-outlined text-white text-3xl">verified_user</span></div>
@@ -348,11 +349,11 @@ tailwind.config = {
   </section>
 
   <!-- Beyond Admission -->
-  <section class="py-24 px-8 bg-surface" id="beyond">
+  <section class="py-14 md:py-24 px-5 md:px-8 bg-surface" id="beyond">
     <div class="max-w-screen-2xl mx-auto">
       <div class="max-w-2xl mb-12">
         <span class="inline-block bg-primary/10 text-primary font-label text-xs uppercase tracking-widest px-3 py-1 rounded-full mb-4">What most consultants don't cover</span>
-        <h2 class="font-display text-display text-on-surface mb-4">Beyond getting you a seat</h2>
+        <h2 class="font-display text-[32px] md:text-display text-on-surface mb-4">Beyond getting you a seat</h2>
         <p class="text-muted text-body-lg">The work most agents stop doing the day you land. Dr. Shivang has lived all six years — these are the things he keeps helping with after admission.</p>
       </div>
 
@@ -392,7 +393,7 @@ tailwind.config = {
   </section>
 
   <!-- FAQs -->
-  <section class="bg-zinc-950 py-24 px-8" id="faq">
+  <section class="bg-zinc-950 py-14 md:py-24 px-5 md:px-8" id="faq">
     <div class="max-w-screen-2xl mx-auto max-w-3xl">
       <div class="flex items-center gap-4 mb-10">
         <div class="bg-primary p-3 rounded-xl"><span class="material-symbols-outlined text-white text-3xl">contact_support</span></div>
@@ -438,15 +439,14 @@ tailwind.config = {
     </div>
   </section>
 
-  <section class="py-24 px-8 bg-white border-t border-border-subtle">
+  <section class="py-14 md:py-24 px-5 md:px-8 bg-white border-t border-border-subtle">
     <div class="max-w-4xl mx-auto text-center">
-      <h2 class="font-display text-display mb-6">Take the first step today</h2>
-      <p class="text-muted text-body-lg mb-4">Fill out the form so I can understand your NEET score, budget, intake year, and parent-call timing before I reply.</p>
+      <h2 class="font-display text-[32px] md:text-display mb-6">Take the first step today</h2>
+      <p class="text-muted text-body-lg mb-4">Share your name and number first. I will save your details, then WhatsApp will open so you can message me directly.</p>
       <p class="text-muted text-body-sm mb-12 italic">The first call is free. No fees, no obligation. This is about guidance — not selling.</p>
-      <div class="flex flex-col sm:flex-row gap-4 justify-center">
-        <a href="admissions.html" class="bg-primary text-white h-14 px-12 rounded-full font-button text-lg hover:bg-primary-container transition-all uppercase leading-[56px]">Apply for 2026 Intake</a>
-        <a data-wa="1" href="#" class="border border-border-subtle text-on-surface h-14 px-8 rounded-full font-button text-sm hover:border-primary hover:text-primary transition-all flex items-center justify-center gap-2 uppercase">
-          <span class="material-symbols-outlined">chat</span> Ask a quick question
+      <div class="flex justify-center">
+        <a href="admissions.html" class="bg-[#25D366] text-white h-14 px-10 rounded-full font-button text-sm hover:brightness-95 transition-all uppercase flex items-center justify-center gap-3">
+          <img src="assets/icons/whatsapp.svg" alt="" class="w-6 h-6"/> I want to be a doctor
         </a>
       </div>
     </div>
@@ -454,7 +454,7 @@ tailwind.config = {
 </main>
 
 <footer class="bg-zinc-950 border-t border-zinc-800">
-  <div class="grid grid-cols-1 md:grid-cols-4 gap-12 px-8 py-16 w-full max-w-screen-2xl mx-auto">
+  <div class="grid grid-cols-1 md:grid-cols-4 gap-10 md:gap-12 px-5 md:px-8 py-14 md:py-16 w-full max-w-screen-2xl mx-auto">
     <div>
       <div class="text-xl font-black text-white font-display mb-6">MBBS WITH DR. SHIVANG</div>
       <p class="text-zinc-500 text-xs font-medium uppercase tracking-widest leading-relaxed">Personal mentorship for NEET aspirants pursuing MBBS in Russia.</p>
@@ -476,9 +476,9 @@ tailwind.config = {
     <div>
       <h4 class="text-rose-500 font-['Epilogue'] text-xs font-medium uppercase tracking-widest mb-6">Connect</h4>
       <ul class="space-y-4">
-        <li><a data-wa="1" href="#" class="text-zinc-400 hover:text-rose-500 transition-all duration-200 font-['Epilogue'] text-xs font-medium uppercase tracking-widest flex items-center gap-2"><img src="assets/icons/whatsapp.svg" alt="" class="w-4 h-4"/> WhatsApp Support</a></li>
+        <li><a href="admissions.html" class="text-zinc-400 hover:text-rose-500 transition-all duration-200 font-['Epilogue'] text-xs font-medium uppercase tracking-widest flex items-center gap-2"><img src="assets/icons/whatsapp.svg" alt="" class="w-4 h-4"/> I want to be a doctor</a></li>
         <li><a data-social="instagram" href="#" class="text-zinc-400 hover:text-rose-500 transition-all duration-200 font-['Epilogue'] text-xs font-medium uppercase tracking-widest flex items-center gap-2"><img src="assets/icons/instagram.svg" alt="" class="w-4 h-4"/> Instagram</a></li>
-        <li><a data-social="facebook" href="#" class="text-zinc-500 cursor-not-allowed transition-all duration-200 font-['Epilogue'] text-xs font-medium uppercase tracking-widest flex items-center gap-2"><img src="assets/icons/facebook.svg" alt="" class="w-4 h-4 opacity-60 grayscale"/> Facebook Coming Soon</a></li>
+        <li><a data-social="facebook" href="https://www.facebook.com/share/18g92rEW95/?mibextid=wwXIfr" class="text-zinc-400 hover:text-rose-500 transition-all duration-200 font-['Epilogue'] text-xs font-medium uppercase tracking-widest flex items-center gap-2"><img src="assets/icons/facebook.svg" alt="" class="w-4 h-4"/> Facebook</a></li>
       </ul>
     </div>
   </div>
@@ -487,11 +487,10 @@ tailwind.config = {
   </div>
 </footer>
 
-<div class="fixed bottom-8 left-1/2 -translate-x-1/2 z-50">
-  <a href="admissions.html" class="bg-zinc-950 text-white h-14 px-8 rounded-full shadow-2xl flex items-center gap-4 hover:scale-105 transition-transform active:scale-95">
-    <span class="bg-primary w-2 h-2 rounded-full animate-pulse"></span>
-    <span class="font-button text-sm uppercase tracking-widest">Free Consultation</span>
-    <span class="material-symbols-outlined text-white">arrow_forward</span>
+<div class="hidden md:block fixed bottom-8 left-1/2 -translate-x-1/2 z-50">
+  <a href="admissions.html" class="bg-zinc-950 text-white h-12 md:h-14 px-5 md:px-8 rounded-full shadow-2xl flex items-center justify-center gap-3 hover:scale-105 transition-transform active:scale-95">
+    <img src="assets/icons/whatsapp.svg" alt="" class="w-5 h-5 md:w-6 md:h-6"/>
+    <span class="font-button text-xs md:text-sm uppercase tracking-widest whitespace-nowrap">I want to be a doctor</span>
   </a>
 </div>
 </body>

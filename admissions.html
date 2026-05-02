@@ -42,35 +42,42 @@ tailwind.config = {
 </head>
 <body class="bg-background text-on-surface font-body-lg">
 <header class="bg-white border-b-2 border-zinc-900 top-0 z-50 fixed w-full">
-  <div class="flex justify-between items-center h-20 px-8 w-full max-w-screen-2xl mx-auto">
-    <a href="index.html" class="text-2xl font-black tracking-tighter text-zinc-950 font-display">MBBS WITH DR. SHIVANG</a>
-    <nav class="hidden md:flex items-center gap-8 font-['Epilogue'] uppercase tracking-tight font-bold text-sm">
+  <div class="grid grid-cols-[1fr_auto_1fr] items-center h-20 px-5 md:px-8 w-full max-w-screen-2xl mx-auto">
+    <a href="index.html" class="col-start-1 justify-self-start text-xl sm:text-2xl leading-tight font-black tracking-tighter text-zinc-950 font-display">MBBS WITH DR. SHIVANG</a>
+    <nav class="hidden md:flex col-start-2 items-center justify-center gap-8 justify-self-center font-['Epilogue'] uppercase tracking-tight font-bold text-sm">
       <a class="text-zinc-600 hover:text-zinc-950 transition-colors" href="mbbs.html">MBBS</a>
       <a class="text-zinc-600 hover:text-zinc-950 transition-colors" href="life.html">Life in Russia</a>
       <a class="text-rose-600 border-b-2 border-rose-600 pb-1" href="admissions.html">Admissions</a>
     </nav>
-    <div class="flex items-center gap-3" aria-label="Social media">
-      <a data-social="instagram" href="#" aria-label="Instagram" class="w-12 h-12 rounded-full border border-zinc-200 bg-white flex items-center justify-center hover:border-rose-600 hover:scale-105 active:scale-95 transition-all">
-        <img src="assets/icons/instagram.svg" alt="" class="w-6 h-6"/>
+    <div class="col-start-3 flex items-center gap-3 justify-self-end" aria-label="Social media">
+      <a data-social="instagram" href="#" aria-label="Instagram" class="w-11 h-11 sm:w-12 sm:h-12 rounded-full border border-zinc-200 bg-white flex items-center justify-center hover:border-rose-600 hover:scale-105 active:scale-95 transition-all">
+        <img src="assets/icons/instagram.svg" alt="" class="w-5 h-5 sm:w-6 sm:h-6"/>
       </a>
-      <a data-social="facebook" href="#" aria-label="Facebook page to be created" class="w-12 h-12 rounded-full border border-zinc-200 bg-white flex items-center justify-center opacity-50 grayscale cursor-not-allowed transition-all">
-        <img src="assets/icons/facebook.svg" alt="" class="w-6 h-6"/>
+      <a data-social="facebook" href="https://www.facebook.com/share/18g92rEW95/?mibextid=wwXIfr" aria-label="Facebook" class="w-11 h-11 sm:w-12 sm:h-12 rounded-full border border-zinc-200 bg-white flex items-center justify-center hover:border-rose-600 hover:scale-105 active:scale-95 transition-all">
+        <img src="assets/icons/facebook.svg" alt="" class="w-5 h-5 sm:w-6 sm:h-6"/>
       </a>
     </div>
   </div>
+  <nav class="md:hidden border-t border-zinc-200 px-4 pb-3" aria-label="Mobile primary navigation">
+    <div class="grid grid-cols-3 gap-2">
+      <a class="h-10 rounded-full border border-zinc-200 flex items-center justify-center font-['Epilogue'] text-[11px] font-bold uppercase tracking-tight text-zinc-700" href="mbbs.html">MBBS</a>
+      <a class="h-10 rounded-full border border-zinc-200 flex items-center justify-center font-['Epilogue'] text-[11px] font-bold uppercase tracking-tight text-zinc-700" href="life.html">Life</a>
+      <a class="h-10 rounded-full bg-primary text-white flex items-center justify-center font-['Epilogue'] text-[11px] font-bold uppercase tracking-tight" href="admissions.html">Admissions</a>
+    </div>
+  </nav>
 </header>
 
-<main class="pt-20">
-  <section class="bg-zinc-950 py-16 px-6">
+<main class="pt-32 md:pt-20">
+  <section class="bg-zinc-950 py-14 md:py-16 px-5 md:px-6">
     <div class="max-w-xl mx-auto text-center">
       <span class="inline-block bg-primary text-white px-4 py-1 rounded-full font-label text-xs uppercase tracking-widest mb-4">Admissions Open · 2026 Intake</span>
-      <h1 class="font-display text-[40px] md:text-[52px] leading-[1.05] font-black tracking-tighter text-white mb-4">Talk to Dr. Shivang</h1>
+      <h1 class="font-display text-[36px] md:text-[52px] leading-[1.05] font-black tracking-tighter text-white mb-4">Talk to Dr. Shivang</h1>
       <p class="text-zinc-400 text-body-lg">Share your name and number. I will save your details, then open WhatsApp so you can message me directly.</p>
       <p class="text-zinc-500 text-body-sm italic mt-3">No fees, no obligation. This is about guidance — not selling.</p>
     </div>
   </section>
 
-  <section class="py-16 px-6">
+  <section class="py-14 md:py-16 px-5 md:px-6">
     <div class="max-w-xl mx-auto">
 
       <form id="admissions-form" novalidate>
@@ -105,8 +112,8 @@ tailwind.config = {
             <p data-error class="hidden text-[13px] text-error-red font-medium mt-2">A valid phone number is required.</p>
           </div>
           <div class="pt-4">
-            <button type="submit" class="w-full h-14 bg-primary text-white rounded-full font-button uppercase tracking-widest hover:bg-primary-container transition-all active:scale-[0.99] flex items-center justify-center gap-2">
-              Save details &amp; open WhatsApp <span class="material-symbols-outlined">chat</span>
+            <button type="submit" class="w-full h-14 bg-[#25D366] text-white rounded-full font-button uppercase tracking-widest hover:brightness-95 transition-all active:scale-[0.99] flex items-center justify-center gap-3">
+              <img src="assets/icons/whatsapp.svg" alt="" class="w-6 h-6"/> I want to be a doctor
             </button>
           </div>
           <p class="text-muted text-[13px] leading-relaxed">
@@ -118,12 +125,12 @@ tailwind.config = {
 
       <div id="lead-submit-error" class="hidden mt-6 rounded-[24px] border border-error-red/30 bg-error-container p-5">
         <p data-lead-error-message class="text-on-error-container text-body-sm font-bold">I couldn't save this form right now.</p>
-        <a data-wa="1" href="#" class="mt-4 inline-flex h-11 px-5 items-center justify-center rounded-full bg-whatsapp-green text-white font-button uppercase tracking-widest text-xs">
-          Message Dr. Shivang on WhatsApp
+        <a data-wa="1" href="#" class="mt-4 inline-flex h-11 px-5 items-center justify-center gap-2 rounded-full bg-[#25D366] text-white font-button uppercase tracking-widest text-xs">
+          <img src="assets/icons/whatsapp.svg" alt="" class="w-5 h-5"/> I want to be a doctor
         </a>
       </div>
 
-      <div class="mt-12 grid grid-cols-3 gap-4 text-center">
+      <div class="mt-10 md:mt-12 grid grid-cols-3 gap-3 md:gap-4 text-center">
         <div><div class="font-display font-black text-2xl text-primary">2 hrs</div><div class="font-label text-[10px] uppercase tracking-widest text-muted mt-1">Response time</div></div>
         <div><div class="font-display font-black text-2xl text-primary">Free</div><div class="font-label text-[10px] uppercase tracking-widest text-muted mt-1">No-obligation call</div></div>
         <div><div class="font-display font-black text-2xl text-primary">1:1</div><div class="font-label text-[10px] uppercase tracking-widest text-muted mt-1">With Dr. Shivang</div></div>
@@ -134,7 +141,7 @@ tailwind.config = {
 </main>
 
 <footer class="bg-zinc-950 border-t border-zinc-800">
-  <div class="grid grid-cols-1 md:grid-cols-4 gap-12 px-8 py-16 w-full max-w-screen-2xl mx-auto">
+  <div class="grid grid-cols-1 md:grid-cols-4 gap-10 md:gap-12 px-5 md:px-8 py-14 md:py-16 w-full max-w-screen-2xl mx-auto">
     <div>
       <div class="text-xl font-black text-white font-display mb-6">MBBS WITH DR. SHIVANG</div>
       <p class="text-zinc-500 text-xs font-medium uppercase tracking-widest leading-relaxed">Personal mentorship for NEET aspirants pursuing MBBS in Russia.</p>
@@ -156,13 +163,13 @@ tailwind.config = {
     <div>
       <h4 class="text-rose-500 font-['Epilogue'] text-xs font-medium uppercase tracking-widest mb-6">Connect</h4>
       <ul class="space-y-4">
-        <li><a data-wa="1" href="#" class="flex items-center gap-2 text-zinc-400 hover:text-rose-500 transition-all font-['Epilogue'] text-xs font-medium uppercase tracking-widest"><img src="assets/icons/whatsapp.svg" alt="" class="w-4 h-4"/> WhatsApp</a></li>
+        <li><a href="#admissions-form" class="flex items-center gap-2 text-zinc-400 hover:text-rose-500 transition-all font-['Epilogue'] text-xs font-medium uppercase tracking-widest"><img src="assets/icons/whatsapp.svg" alt="" class="w-4 h-4"/> I want to be a doctor</a></li>
         <li><a data-social="instagram" href="#" class="flex items-center gap-2 text-zinc-400 hover:text-rose-500 transition-all font-['Epilogue'] text-xs font-medium uppercase tracking-widest"><img src="assets/icons/instagram.svg" alt="" class="w-4 h-4"/> Instagram</a></li>
-        <li><a data-social="facebook" href="#" class="flex items-center gap-2 text-zinc-500 cursor-not-allowed transition-all font-['Epilogue'] text-xs font-medium uppercase tracking-widest"><img src="assets/icons/facebook.svg" alt="" class="w-4 h-4 opacity-60 grayscale"/> Facebook Coming Soon</a></li>
+        <li><a data-social="facebook" href="https://www.facebook.com/share/18g92rEW95/?mibextid=wwXIfr" class="flex items-center gap-2 text-zinc-400 hover:text-rose-500 transition-all font-['Epilogue'] text-xs font-medium uppercase tracking-widest"><img src="assets/icons/facebook.svg" alt="" class="w-4 h-4"/> Facebook</a></li>
       </ul>
     </div>
   </div>
-  <div class="border-t border-zinc-900 py-8 px-8 max-w-screen-2xl mx-auto">
+  <div class="border-t border-zinc-900 py-8 px-5 md:px-8 max-w-screen-2xl mx-auto">
     <p class="text-zinc-600 font-['Epilogue'] text-[10px] font-medium uppercase tracking-widest">© 2026 MBBS with Dr. Shivang · Dr. Shivang Gupta. All rights reserved.</p>
   </div>
 </footer>

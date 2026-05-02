@@ -3,7 +3,7 @@
 const WA_NUMBER = "919211567773";
 const WA_MESSAGE = "I want to be a doctor";
 const INSTAGRAM_URL = "https://www.instagram.com/mbbswithdr.shivang/?__d=1";
-const FACEBOOK_URL = "";
+const FACEBOOK_URL = "https://www.facebook.com/share/18g92rEW95/?mibextid=wwXIfr";
 const CALENDLY_URL = "https://calendly.com/samatvaintelligence/30min";
 
 // Paste the deployed Google Apps Script web app URL here after deployment.
@@ -202,6 +202,9 @@ function rewriteSocialLinks() {
       el.setAttribute("href", FACEBOOK_URL);
       el.setAttribute("target", "_blank");
       el.setAttribute("rel", "noopener noreferrer");
+      el.setAttribute("aria-label", "Facebook");
+      el.setAttribute("title", "Facebook");
+      el.removeAttribute("aria-disabled");
       return;
     }
 
