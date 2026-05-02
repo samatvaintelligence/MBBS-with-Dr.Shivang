@@ -16,9 +16,9 @@ The brand is the founder, not a company. Dr. Shivang dropped NEET three times, g
 
 - **Pure static HTML.** No build step, no framework, no package manager.
 - **Tailwind via CDN** (`<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries">`). Each HTML file declares its own `tailwind.config = {...}` inline — these configs are duplicated across pages and **must stay in sync**. Custom design tokens (colors like `primary` `#b90039`, fonts Epilogue / Manrope, named spacing).
-- **One JS file:** `assets/app.js` — vanilla, no modules. Handles WhatsApp/tel/social link rewriting, Calendly click handling, Meta Pixel hooks, UTM/referrer attribution, and the multi-step admissions form. (The language-page toggle is dead code now that language.html is orphaned.)
-- **Photos** in `assets/img/` — all extracted from the brand PDF and resized as JPEG (max 1600px, q=85).
-- **Calendly widget** loaded on `admissions.html` via `<link>` + `<script>` from `assets.calendly.com`. Popup triggered with `Calendly.initPopupWidget({url:'https://calendly.com/samatvaintelligence/30min'})`.
+- **One JS file:** `assets/app.js` — vanilla, no modules. Handles WhatsApp/tel/social link rewriting, dormant Calendly click handling, Meta Pixel hooks, UTM/referrer attribution, and the short admissions form. (The language-page toggle is dead code now that language.html is orphaned.)
+- **Photos** in `assets/img/` — mostly extracted from the brand PDF and resized as JPEG (max 1600px, q=85). Campus photos for Chuvash, Moscow, and Pskov are credited in `assets/img/IMAGE_CREDITS.md`.
+- **Calendly widget assets** are still loaded on `admissions.html`, but the current visible flow does not use Calendly. The post-submit handoff is WhatsApp.
 - **Lead backend:** Google Apps Script + Google Sheet. `google-apps-script/lead-capture.gs` is the deployable endpoint template. The live deployed Web App URL is stored in `assets/app.js → LEAD_ENDPOINT_URL`. Admin lead review happens in the Google Sheet `Leads` tab.
 - **Meta tracking:** `assets/app.js` has Meta Pixel hooks and `META_PIXEL_ID` is set locally. Verify events in Meta Events Manager before scaling paid traffic.
 
@@ -28,12 +28,13 @@ Open the site by double-clicking `index.html` or running a quick local server (`
 
 ```
 index.html        Home: greeting animation, hero gallery, Russia vs India comparison, founder section, concern carousel, CTA strip
-mbbs.html         Core product page: Chuvash featured + supporting unis, course details, fees, eligibility, beyond-admission, FAQ
-admissions.html   Multi-step lead form (basic info → NEET journey → review → Calendly booking modal)
+mbbs.html         Core product page: Chuvash featured + Moscow/Pskov support routes, course details, fees, eligibility, beyond-admission, FAQ
+admissions.html   Short lead form (name + phone only), then redirects to WhatsApp
 life.html         Student-life lookbook + masonry gallery (testimonials moved to homepage)
 language.html     ORPHANED — Russian-language prep course catalogue. No pages link to it. Do not add links back.
-assets/app.js     All JS (WhatsApp/tel/social links, Calendly, Meta Pixel, attribution, admissions form; language toggle is dead code)
-assets/img/       11 authentic photos extracted from the brand PDF
+assets/app.js     All JS (WhatsApp/tel/social links, dormant Calendly hook, Meta Pixel, attribution, admissions form; language toggle is dead code)
+assets/img/       Brand photos from the PDF plus credited campus photos
+assets/img/IMAGE_CREDITS.md  Credits for externally sourced campus images
 google-apps-script/lead-capture.gs  Google Apps Script lead endpoint template
 docs/lead-funnel-setup.md  Setup notes for Google Sheets + Meta Pixel + ad URL parameters
 ```
@@ -48,6 +49,14 @@ MBBS IN RUSSIA  |  LIFE IN RUSSIA  |  ADMISSIONS
 
 The site title "MBBS WITH DR. SHIVANG" links back to `index.html` (homepage). There is no separate "Programs" section — the homepage IS the landing page reached by clicking the title.
 
+On mobile, the primary nav must remain visible as compact pills:
+
+```
+MBBS  |  LIFE  |  ADMISSIONS
+```
+
+Do not hide mobile navigation behind social icons. Keep the nav row visually attached to the header; there should not be a divider line above the mobile nav pills.
+
 ## Page-by-page notes
 
 ### index.html
@@ -58,21 +67,20 @@ The site title "MBBS WITH DR. SHIVANG" links back to `index.html` (homepage). Th
 
 ### mbbs.html
 Sub-nav and section order (top to bottom):
-1. **Universities** — Chuvash featured card, then three "Also supported" cards (Kazan, Pirogov, Pavlov). Each alternate card has a "Get in touch to know more" CTA leading to `admissions.html`.
+1. **Universities** — Chuvash featured card, then two "Also supported" route cards: Moscow and Pskov. Each alternate card uses a real campus photo and a single `I want to be a doctor` CTA leading to `admissions.html`.
 2. **Course Details**
-3. **Fees** — Shows **tuition fee + hostel fee only**. Do not add other line items (flights, food, etc.) to this section; those belong in the first-year breakdown prose.
+3. **Fees** — Has a toggle between **official tuition + hostel** and **all-inclusive real cost**, plus RUB/INR conversion. Keep the three all-inclusive cards and one official tuition/hostel view readable on mobile.
 4. **Eligibility**
 5. **Beyond Admission** (mentorship services)
 6. **FAQs**
 
 ### admissions.html
-- Multi-step form: Step 1 (basic info) → Step 2 (NEET journey) → Step 3 (review) → success modal.
-- Captures `{ fullName, phone, neet, drops, budget, year, parentCallTime }` plus hidden attribution fields for UTM/ad params.
-- Submits to Google Apps Script via `assets/app.js → LEAD_ENDPOINT_URL` using `fetch(..., { mode: "no-cors" })`. Apps Script responses are opaque in-browser, so a visible success modal means the browser sent the request; the Google Sheet / Apps Script executions are the source of truth.
-- **Success modal** has two CTAs: primary = "Book a call with Dr. Shivang" (triggers `Calendly.initPopupWidget({url:'https://calendly.com/samatvaintelligence/30min'})`), secondary = WhatsApp (`data-wa="1"`).
-- On submission failure before the request is sent, the page shows a WhatsApp fallback so the query is not missed.
-- Calendly CSS: `https://assets.calendly.com/assets/external/widget.css`
-- Calendly JS: `https://assets.calendly.com/assets/external/widget.js`
+- Short form only: `Full Name` and `Phone`.
+- Captures `{ fullName, phone }` plus hidden attribution fields for UTM/ad params.
+- Submits to Google Apps Script via `assets/app.js → LEAD_ENDPOINT_URL` using `fetch(..., { mode: "no-cors" })`. Apps Script responses are opaque in-browser, so a successful browser request redirects to WhatsApp with the prefilled message.
+- After successful submission, send the prospective student to WhatsApp with *"I want to be a doctor"* ready to send.
+- On submission failure before the request is sent, the page shows a direct WhatsApp fallback so the query is not missed.
+- Calendly CSS/JS are still present, but no visible CTA should open Calendly unless the user explicitly asks to reintroduce call booking.
 
 ### life.html
 - Student-life lookbook and masonry photo gallery.
@@ -84,9 +92,17 @@ Sub-nav and section order (top to bottom):
 
 Anchors with `data-wa="1"` are auto-rewritten by `app.js` to `https://wa.me/919211567773?text=I%20want%20to%20be%20a%20doctor`. Anchors with `data-tel="1"` get the same number on `tel:`. **Don't hard-code the WhatsApp URL** — use the data attribute and let `app.js` handle it. Number lives in `assets/app.js` as `WA_NUMBER` / `WA_MESSAGE` constants.
 
+Visible lead CTAs across the site should be one unified action:
+
+```
+I want to be a doctor
+```
+
+Use the official WhatsApp icon from `assets/icons/whatsapp.svg`, but route normal page CTAs to `admissions.html` first so name and phone are captured before WhatsApp opens. Direct `data-wa="1"` links should be reserved for fallback/error states where the form could not submit.
+
 ### Lead-form state
 
-`assets/app.js → initAdmissionsForm()` keeps a `state` object: `{ fullName, phone, neet, drops, budget, year, parentCallTime }`. Each step's required inputs are validated, captured into `state`, and rendered on the review step via `renderReview()`. If you add a new field to `admissions.html`, you must also add it to the `state` object, `renderReview()`, and `buildLeadPayload()` — these don't auto-derive.
+`assets/app.js → initAdmissionsForm()` keeps a `state` object: `{ fullName, phone }`. Required inputs are validated, captured into `state`, and sent through `buildLeadPayload()`. If you add a new field to `admissions.html`, you must also add it to the `state` object and `buildLeadPayload()` — these don't auto-derive.
 
 ### Lead backend + admin access
 
@@ -115,9 +131,9 @@ Dropped from the Sheet to keep it usable: raw user agent, duplicate source/ad-pl
 ### Attribution + tracking
 
 - `assets/app.js` stores first-touch attribution in `sessionStorage` and writes hidden fields in the admissions form.
-- Supported ad params: `utm_source`, `utm_medium`, `utm_campaign`, `utm_content`, `utm_term`, `campaign_id`, `adset_id`, `ad_id`, `placement`.
+- Supported ad params: `utm_id`, `utm_source`, `utm_medium`, `utm_campaign`, `utm_content`, `utm_term`, `ad_platform`, `campaign_id`, `adset_id`, `ad_id`, `placement`, `fbclid`.
 - Meta Pixel is initialized only when `META_PIXEL_ID` is non-empty.
-- Events implemented: `PageView`, `WhatsAppClick`, `LeadFormStart`, `LeadSubmitted`, standard `Lead`, `LeadSubmitFailed`, `CalendlyClick`.
+- Events implemented: `PageView`, `WhatsAppClick`, `LeadFormStart`, `LeadSubmitted`, standard `Lead`, `LeadSubmitFailed`. `CalendlyClick` support remains in `assets/app.js` only for future/dormant Calendly buttons.
 - Recommended ad URL pattern is documented in `docs/lead-funnel-setup.md`.
 
 ### Tailwind config sync
@@ -134,9 +150,13 @@ Every HTML file ships its own copy of the `tailwind.config = {...}` block (inlin
 
 ### Image policy
 
-All photos in `assets/img/` are Dr. Shivang's own (extracted from the brand PDF, ©Dr. Shivang Gupta). The known remaining stock imagery is:
+Most photos in `assets/img/` are Dr. Shivang's own (extracted from the brand PDF, ©Dr. Shivang Gupta). The externally sourced campus images are:
 
-1. The three **"Also supported" university cards** on `mbbs.html` (Kazan, Pirogov, Pavlov) — the PDF only has Chuvash photos.
+1. `chuvash-state-university-campus.jpg`
+2. `moscow-rudn-university.jpg`
+3. `pskov-state-university.jpg`
+
+Keep credits in `assets/img/IMAGE_CREDITS.md` if these images are edited or replaced.
 
 If you swap an image, also rewrite any caption / `alt` text that referenced the previous image's content.
 
@@ -149,9 +169,13 @@ The site previously claimed `1.2K+ Students Placed`, `12 Partner Universities`, 
 - **Release 1 lead capture is live.** Google Apps Script is deployed, `LEAD_ENDPOINT_URL` is set in `assets/app.js`, and a test form submission appeared in the Google Sheet `Leads` tab.
 - **Google Sheet is the current admin panel.** Filled forms are accessed at `https://docs.google.com/spreadsheets/d/1OuS24ECwZBXdJrdcnlLFI00HsCUjPxvXizJjav_Bbc4/edit`, tab `Leads`.
 - **Fake testimonials were removed.** Homepage/life-page fake testimonial content was replaced with honest parent/student concern messaging.
-- **Parent-call qualification is added.** Admissions form captures `parentCallTime`; `mbbs.html` and `life.html` include parent-call CTAs.
+- **Parent-call/follow-up fields remain in the Sheet.** The public form now captures only name + phone; detailed qualification happens over WhatsApp/follow-up.
 - **UTM/ad attribution is wired.** The form captures campaign/adset/ad/placement fields and stores them in the lead row.
 - **Meta Pixel is configured locally.** `META_PIXEL_ID` is set in `assets/app.js`; verify events in Meta Events Manager before scaling traffic.
+- **Single CTA flow is live locally.** Visible lead CTAs use `I want to be a doctor`, point to the short details form first, and then redirect to WhatsApp after submission.
+- **Mobile navigation is live locally.** All active pages show mobile nav pills for MBBS, Life, and Admissions.
+- **Facebook link is live locally.** `FACEBOOK_URL` points to `https://www.facebook.com/share/18g92rEW95/?mibextid=wwXIfr`.
+- **Moscow/Pskov support routes are live locally.** Kazan, Pirogov, and Pavlov placeholder cards were removed from `mbbs.html`.
 - **Release 3 follow-up workflow is added locally.** `google-apps-script/lead-capture.gs` now generates follow-up stage, due time, WhatsApp draft link, message template, contact tracking, and attempt count. Paste/deploy the latest script and run `setupLeadSheet()` plus `refreshFollowUpQueue()` in Apps Script.
 - **Release 4 qualifier layer is added locally.** The Sheet now computes qualifier score/tier, main objection, and recommended next action. `AI Summary` exists as the future AI/chat summary field. This is rules-based until real lead data justifies a secure AI backend.
 - **Release 5 optimization layer is added locally.** The Sheet now tracks optimization event, lost reason, outcome timestamp, and an `Optimization` dashboard tab via Apps Script. It does not send data to Meta automatically.
@@ -227,9 +251,8 @@ Goal: optimize Meta around lead quality and admissions outcomes.
 ## Other open work
 
 1. **Private admin dashboard not built.** Leads are currently accessed in Google Sheets. Do not expose lead data in the public static site. If a web admin UI is needed, build a separate Google Apps Script admin webapp restricted to the owner account that reads/writes the same `Leads` sheet.
-2. **Three "Also supported" university cards** still use stock imagery (Kazan, Pirogov, Pavlov). Authentic photos would need to come from Dr. Shivang's Instagram or direct outreach.
-3. **Tailwind configs duplicated 4×** (language.html excluded as orphaned). Consider a single `assets/tailwind-config.js` if this becomes painful.
-4. **Hosting not configured.** Recommended path: **GitHub → Google Cloud Storage** (static bucket + `allUsers` read + `index.html` as website suffix). CI/CD via GitHub Actions (`gsutil rsync -r . gs://bucket-name`). Custom domain via Cloud Load Balancer + managed SSL, or simply use Cloud Storage's direct URL for a quick launch.
+2. **Tailwind configs duplicated 4×** (language.html excluded as orphaned). Consider a single `assets/tailwind-config.js` if this becomes painful.
+3. **Hosting is currently GitHub Pages + custom domain.** Domain is `mbbswithdrshivang.in`; DNS and GitHub Pages should be checked if HTTPS/domain behavior regresses.
 
 ## Reference: WhatsApp + key numbers
 
