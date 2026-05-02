@@ -7,22 +7,25 @@ const FACEBOOK_URL = "";
 const CALENDLY_URL = "https://calendly.com/samatvaintelligence/30min";
 
 // Paste the deployed Google Apps Script web app URL here after deployment.
-const LEAD_ENDPOINT_URL = "";
+const LEAD_ENDPOINT_URL = "https://script.google.com/macros/s/AKfycbx0_WkMEnGuSnmkV3gxoWrlxbWFIgebWIcMjyXWJM6p9U82f0uZApbDtMdO1ILNN_DKOg/exec";
 
 // Paste the Meta Pixel ID here. Tracking is skipped when this is empty.
-const META_PIXEL_ID = "";
+const META_PIXEL_ID = "2071213710091555";
 
 const ATTRIBUTION_STORAGE_KEY = "mbbsWithDrShivangAttribution";
 const ATTRIBUTION_KEYS = [
+  "utm_id",
   "utm_source",
   "utm_medium",
   "utm_campaign",
   "utm_content",
   "utm_term",
+  "ad_platform",
   "campaign_id",
   "adset_id",
   "ad_id",
   "placement",
+  "fbclid",
 ];
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -57,6 +60,18 @@ function collectAttribution() {
     const value = params.get(key);
     if (value) attribution[key] = value;
   });
+
+  const fbclid = params.get("fbclid") || attribution.fbclid;
+  if (fbclid) {
+    attribution.fbclid = fbclid;
+    attribution.fbc = attribution.fbc || `fb.1.${Date.now()}.${fbclid}`;
+  }
+
+  const fbcCookie = getCookie("_fbc");
+  if (fbcCookie) attribution.fbc = fbcCookie;
+
+  const fbpCookie = getCookie("_fbp");
+  if (fbpCookie) attribution.fbp = fbpCookie;
 
   if (!attribution.landingPage) {
     attribution.landingPage = window.location.href;
@@ -130,10 +145,15 @@ function getTrackingParams(extra = {}) {
     utm_campaign: attribution.utm_campaign || "",
     utm_content: attribution.utm_content || "",
     utm_term: attribution.utm_term || "",
+    utm_id: attribution.utm_id || "",
+    ad_platform: attribution.ad_platform || "",
     campaign_id: attribution.campaign_id || "",
     adset_id: attribution.adset_id || "",
     ad_id: attribution.ad_id || "",
     placement: attribution.placement || "",
+    fbclid: attribution.fbclid || "",
+    fbc: attribution.fbc || "",
+    fbp: attribution.fbp || "",
     ...extra,
   };
 }
@@ -396,6 +416,7 @@ function initAdmissionsForm() {
       notes: "",
       finalOutcome: "",
       aiSummary: "",
+      consentToContact: true,
       sourcePage: attribution.sourcePage || "",
       landingPage: attribution.landingPage || "",
       referrer: attribution.referrer || "",
@@ -410,9 +431,16 @@ function initAdmissionsForm() {
 
     const response = await fetch(LEAD_ENDPOINT_URL, {
       method: "POST",
+      mode: "no-cors",
       headers: { "Content-Type": "text/plain;charset=utf-8" },
       body: JSON.stringify(payload),
     });
+
+    // Apps Script accepts the POST, but browsers usually expose the response as
+    // opaque because Google does not send normal CORS headers for ContentService.
+    if (response.type === "opaque") {
+      return { ok: true, opaque: true };
+    }
 
     let result = null;
     try {
@@ -516,6 +544,13 @@ function initAdmissionsForm() {
 
 function getElementText(el) {
   return (el.textContent || "").replace(/\s+/g, " ").trim().slice(0, 120);
+}
+
+function getCookie(name) {
+  const value = document.cookie
+    .split("; ")
+    .find((row) => row.startsWith(`${name}=`));
+  return value ? decodeURIComponent(value.split("=").slice(1).join("=")) : "";
 }
 
 function escapeHtml(str) {
