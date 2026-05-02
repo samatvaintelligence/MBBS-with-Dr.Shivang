@@ -339,7 +339,7 @@ function parsePayload(e) {
 }
 
 function validatePayload(payload) {
-  const required = ["fullName", "phone", "neet", "drops", "budget", "year", "parentCallTime"];
+  const required = ["fullName", "phone"];
   required.forEach((key) => {
     if (!payload[key]) throw new Error("Missing required field: " + key);
   });
@@ -566,12 +566,33 @@ function updateOutcomeCells(sheet, rowNumber, outcome) {
 }
 
 function buildQualifierCells(lead) {
+  if (!hasQualifierInputs(lead)) {
+    return [
+      "",
+      "",
+      "not clear yet",
+      "Start the WhatsApp conversation and ask NEET score, target intake, budget, and parent call timing.",
+    ];
+  }
+
   const score = getQualifierScore(lead);
   const tier = getQualifierTier(score);
   const objection = getMainObjection(lead);
   const nextAction = getRecommendedNextAction(lead, tier, objection);
 
   return [score, tier, objection, nextAction];
+}
+
+function hasQualifierInputs(lead) {
+  return [
+    lead.neet,
+    lead.drops,
+    lead.budget,
+    lead.year,
+    lead.parentCallTime,
+    lead.notes,
+    lead.finalOutcome,
+  ].some((value) => normalizeText(value));
 }
 
 function getQualifierScore(lead) {

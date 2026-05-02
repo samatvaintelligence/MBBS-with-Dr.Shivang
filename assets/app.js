@@ -166,7 +166,7 @@ function trackMetaEvent(eventName, params = {}, options = {}) {
 }
 
 function rewriteWhatsAppLinks() {
-  const url = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(WA_MESSAGE)}`;
+  const url = getWhatsAppUrl();
   document.querySelectorAll('[data-wa="1"]').forEach((el) => {
     el.setAttribute("href", url);
     el.setAttribute("target", "_blank");
@@ -178,6 +178,10 @@ function rewriteWhatsAppLinks() {
       });
     });
   });
+}
+
+function getWhatsAppUrl(message = WA_MESSAGE) {
+  return `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(message)}`;
 }
 
 function rewriteTelLinks() {
@@ -318,11 +322,6 @@ function initAdmissionsForm() {
   const state = {
     fullName: "",
     phone: "",
-    neet: "",
-    drops: "",
-    budget: "",
-    year: "",
-    parentCallTime: "",
   };
 
   function show(idx) {
@@ -391,12 +390,7 @@ function initAdmissionsForm() {
     if (!reviewEl) return;
     reviewEl.innerHTML = `
       <div class="flex justify-between gap-4 py-3 border-b border-border-subtle"><span class="text-muted">Name</span><span class="font-bold text-right">${escapeHtml(state.fullName)}</span></div>
-      <div class="flex justify-between gap-4 py-3 border-b border-border-subtle"><span class="text-muted">Phone</span><span class="font-bold text-right">${escapeHtml(state.phone)}</span></div>
-      <div class="flex justify-between gap-4 py-3 border-b border-border-subtle"><span class="text-muted">NEET Score</span><span class="font-bold text-right">${escapeHtml(state.neet)}</span></div>
-      <div class="flex justify-between gap-4 py-3 border-b border-border-subtle"><span class="text-muted">Drop Years</span><span class="font-bold text-right">${escapeHtml(state.drops)}</span></div>
-      <div class="flex justify-between gap-4 py-3 border-b border-border-subtle"><span class="text-muted">Total Budget</span><span class="font-bold text-right">${escapeHtml(state.budget)}</span></div>
-      <div class="flex justify-between gap-4 py-3 border-b border-border-subtle"><span class="text-muted">Target Year</span><span class="font-bold text-right">${escapeHtml(state.year)}</span></div>
-      <div class="flex justify-between gap-4 py-3"><span class="text-muted">Parent Call Time</span><span class="font-bold text-right">${escapeHtml(state.parentCallTime)}</span></div>
+      <div class="flex justify-between gap-4 py-3"><span class="text-muted">Phone</span><span class="font-bold text-right">${escapeHtml(state.phone)}</span></div>
     `;
   }
 
@@ -406,11 +400,6 @@ function initAdmissionsForm() {
       submittedAt: new Date().toISOString(),
       fullName: state.fullName.trim(),
       phone: state.phone.trim(),
-      neet: state.neet.trim(),
-      drops: state.drops,
-      budget: state.budget,
-      year: state.year,
-      parentCallTime: state.parentCallTime,
       leadStatus: "new",
       followUpOwner: "Dr. Shivang",
       notes: "",
@@ -461,7 +450,7 @@ function initAdmissionsForm() {
     submitButton.disabled = isSubmitting;
     submitButton.classList.toggle("opacity-70", isSubmitting);
     submitButton.classList.toggle("cursor-wait", isSubmitting);
-    submitButton.textContent = isSubmitting ? "Submitting..." : originalSubmitText;
+    submitButton.textContent = isSubmitting ? "Saving details..." : originalSubmitText;
   }
 
   function showSubmitError(message) {
@@ -500,26 +489,27 @@ function initAdmissionsForm() {
 
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
+    markFormStarted();
+    if (!validateStep(current)) return;
     captureAllSteps();
     hideSubmitError();
     setSubmitting(true);
 
     const payload = buildLeadPayload();
+    const whatsappUrl = getWhatsAppUrl();
 
     try {
       await submitLead(payload);
       trackMetaEvent("LeadSubmitted", {
         form_id: form.id,
-        target_year: payload.year,
-        budget: payload.budget,
+        next_step: "whatsapp",
       });
       trackMetaEvent("Lead", { form_id: form.id }, { standard: true });
 
-      const modal = document.getElementById("success-modal");
-      if (modal) modal.classList.remove("hidden");
       form.reset();
       resetState();
       populateAttributionFields(getAttribution());
+      window.location.href = whatsappUrl;
     } catch (err) {
       showSubmitError("I couldn't save this form right now. Please message Dr. Shivang directly on WhatsApp so your query is not missed.");
       trackMetaEvent("LeadSubmitFailed", {
@@ -530,14 +520,6 @@ function initAdmissionsForm() {
       setSubmitting(false);
     }
   });
-
-  const closeBtn = document.getElementById("modal-close");
-  if (closeBtn) {
-    closeBtn.addEventListener("click", () => {
-      document.getElementById("success-modal").classList.add("hidden");
-      show(0);
-    });
-  }
 
   show(0);
 }
