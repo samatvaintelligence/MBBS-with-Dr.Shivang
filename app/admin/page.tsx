@@ -1,6 +1,6 @@
 import { db } from "@/lib/db";
 import { leads } from "@/lib/schema";
-import { eq, sql, and, lte, not } from "drizzle-orm";
+import { eq, sql, and, lte, not, gte, desc } from "drizzle-orm";
 import Link from "next/link";
 
 export const dynamic = "force-dynamic";
@@ -18,7 +18,7 @@ export default async function AdminDashboard() {
   const [newTodayResult] = await db
     .select({ count: sql<number>`count(*)` })
     .from(leads)
-    .where(sql`${leads.createdAt} >= ${todayStart}`);
+    .where(gte(leads.createdAt, todayStart));
 
   const [hotResult] = await db
     .select({ count: sql<number>`count(*)` })
@@ -62,7 +62,7 @@ export default async function AdminDashboard() {
   const recentLeads = await db
     .select()
     .from(leads)
-    .orderBy(sql`${leads.createdAt} DESC`)
+    .orderBy(desc(leads.createdAt))
     .limit(5);
 
   const stats = [
