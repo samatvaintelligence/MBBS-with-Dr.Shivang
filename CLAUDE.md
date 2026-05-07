@@ -2,7 +2,11 @@
 
 ## What this is
 
-A static marketing + lead-capture site for **Dr. Shivang Gupta's** personal mentorship service that helps Indian NEET aspirants (especially droppers) enrol in MBBS at Russian government medical universities. The 2026 intake is featured at **Chuvash State University, Cheboksary**.
+A marketing + lead-capture site for **Dr. Shivang Gupta's** personal mentorship service that helps Indian NEET aspirants (especially droppers) enrol in MBBS at Russian government medical universities. The 2026 intake is featured at **Chuvash State University, Cheboksary**.
+
+The project has two layers:
+1. **Static marketing pages** served from `/public` (the original HTML site, unchanged except for the form endpoint)
+2. **Full-stack admin backend** built on Next.js — replaces the former Google Apps Script + Google Sheet system with a proper database, API, and admin dashboard
 
 The brand is the founder, not a company. Dr. Shivang dropped NEET three times, graduated MBBS from Russia, currently interns at G.R.M.C Gwalior, and runs this mentorship 1:1. Every piece of copy should sound like him talking — first-person, empathetic, anti-consultant. Repeating brand promises (verbatim from the PDF):
 
@@ -14,107 +18,181 @@ The brand is the founder, not a company. Dr. Shivang dropped NEET three times, g
 
 ## Tech stack
 
-- **Pure static HTML.** No build step, no framework, no package manager.
-- **Tailwind via CDN** (`<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries">`). Each HTML file declares its own `tailwind.config = {...}` inline — these configs are duplicated across pages and **must stay in sync**. Custom design tokens (colors like `primary` `#b90039`, fonts Epilogue / Manrope, named spacing).
-- **One JS file:** `assets/app.js` — vanilla, no modules. Handles WhatsApp link rewriting, tel: links, and the multi-step admissions form. (The language-page toggle is dead code now that language.html is orphaned.)
-- **Photos** in `assets/img/` — all extracted from the brand PDF and resized as JPEG (max 1600px, q=85).
-- **Calendly widget** loaded on `admissions.html` via `<link>` + `<script>` from `assets.calendly.com`. Popup triggered with `Calendly.initPopupWidget({url:'https://calendly.com/samatvaintelligence/30min'})`.
-- **No backend.** The admissions form collects state but does not POST anywhere yet (see "Open work" below).
+| Layer | Choice | Notes |
+|-------|--------|-------|
+| Framework | **Next.js 16.2.4** (App Router, Turbopack) | API routes replace Apps Script; React powers admin UI; static HTML served from `/public` |
+| Database | **Supabase** (Postgres) | Hosted Postgres, free tier, row-level security available |
+| ORM | **Drizzle** + `postgres-js` driver | Type-safe schema, zero runtime overhead, migration tooling |
+| Auth | **NextAuth v5** (`next-auth@5.0.0-beta.25`) + Google OAuth | Single authorized email (`ADMIN_EMAIL` env var) |
+| Admin UI | Tailwind CSS v4 + custom components | Tailwind v4 uses `@import "tailwindcss"` and `@theme inline {}` syntax |
+| Charts | **Recharts** | Funnel and campaign charts on optimization page |
+| Hosting | **Vercel** (planned) | Free tier, auto HTTPS, cron jobs, preview deploys |
 
-Open the site by double-clicking `index.html` or running a quick local server (`python3 -m http.server` from the repo root). There are no tests.
+### Key dependencies
+- `drizzle-orm` + `drizzle-kit` — schema, migrations, queries
+- `postgres` — Postgres.js driver (not `pg`, not `@supabase/supabase-js` for queries)
+- `next-auth` v5 beta — auth with Google OAuth
+- `recharts` — admin dashboard charts
+- `@supabase/supabase-js` — installed but Drizzle handles all DB access directly via `postgres-js`
+
+### Running locally
+```bash
+npm run dev          # Next.js dev server with Turbopack
+npm run db:generate  # Generate Drizzle migrations
+npm run db:push      # Push schema to database (dev)
+npm run db:migrate   # Run migrations (prod)
+npm run db:studio    # Drizzle Studio GUI
+```
+
+### Environment variables
+```
+DATABASE_URL          — Supabase Postgres connection string (postgresql://...)
+AUTH_SECRET           — NextAuth secret (openssl rand -base64 32)
+NEXTAUTH_URL          — http://localhost:3000 (dev)
+GOOGLE_CLIENT_ID      — Google OAuth client ID
+GOOGLE_CLIENT_SECRET  — Google OAuth client secret
+ADMIN_EMAIL           — Only this email can access /admin
+```
 
 ## File map
 
 ```
-index.html        Home: greeting animation, hero gallery, Russia vs India comparison, founder section, testimonial carousel, CTA strip
-mbbs.html         Core product page: Chuvash featured + supporting unis, course details, fees, eligibility, beyond-admission, FAQ
-admissions.html   Multi-step lead form (basic info → NEET journey → review → Calendly booking modal)
-life.html         Student-life lookbook + masonry gallery (testimonials moved to homepage)
-language.html     ORPHANED — Russian-language prep course catalogue. No pages link to it. Do not add links back.
-assets/app.js     All JS (WhatsApp, tel, form state; language toggle is dead code)
-assets/img/       11 authentic photos extracted from the brand PDF
+/app
+  /admin/layout.tsx              — Sidebar nav, auth gate
+  /admin/page.tsx                — Dashboard overview (stats, follow-up queue)
+  /admin/leads/page.tsx          — Lead table (sort, filter, inline status edit)
+  /admin/leads/[id]/page.tsx     — Lead detail + edit + activity log
+  /admin/optimization/page.tsx   — Campaign performance dashboard
+  /admin/login/page.tsx          — Google OAuth login
+  /api/leads/route.ts            — POST (public), GET (auth)
+  /api/leads/[id]/route.ts       — GET + PATCH (auth)
+  /api/leads/refresh/route.ts    — POST (auth) — batch recompute
+  /api/leads/export/route.ts     — GET (auth) — CSV download
+  /api/auth/[...nextauth]/route.ts
+/lib
+  /db.ts                         — Drizzle + postgres-js client
+  /schema.ts                     — Drizzle Postgres table definitions
+  /lead-engine.ts                — Ported qualifier/follow-up/outcome logic (1:1 from Apps Script)
+  /constants.ts                  — Status lists, tiers, message templates
+  /auth.ts                       — NextAuth v5 config
+/components/admin/               — LeadTable, LeadDetailForm, Sidebar
+/public/                         — Static HTML marketing pages (served as-is by Next.js)
+  index.html, mbbs.html, admissions.html, life.html, language.html (orphaned)
+  /assets/app.js                 — Vanilla JS (WhatsApp, tel, form state + submission)
+  /assets/img/                   — Photos from brand PDF
+/scripts/migrate-from-sheet.ts   — One-time CSV → Postgres migration
+/drizzle/migrations/             — SQL migration files
+/google-apps-script/lead-capture.gs — Original 786-line Apps Script (reference only)
 ```
 
-## Site structure and nav
+## Database schema (Postgres via Drizzle)
 
-All four active pages share the same nav order (no Language link anywhere):
+Four tables defined in `lib/schema.ts`:
 
+- **`leads`** — Core lead data (identity, status, qualifier scores, follow-up state, outcome). Uses `uuid` PKs with `defaultRandom()`, `timestamp({ withTimezone: true })` for dates, `boolean` for consent.
+- **`lead_attribution`** — One-to-one with leads. UTM params, campaign/adset/ad IDs, fbclid.
+- **`lead_activity_log`** — Audit trail of field changes. `changed_by` is one of: `form_submission`, `admin`, `system`, `migration`.
+- **`meta_campaign_cache`** — Phase 3: cached Meta Marketing API data.
+
+Important: `neetScore`, `budget`, `dropYears`, `targetIntake` are stored as `TEXT` (not numbers) because the scoring logic uses string pattern matching (e.g. `indexOf("35 lakh")`).
+
+## Business logic: `lib/lead-engine.ts`
+
+Exact 1:1 port of `google-apps-script/lead-capture.gs` lines 535–785. Key functions:
+
+| Function | What it does |
+|----------|--------------|
+| `recomputeLead()` | Master function — calls all below, returns all computed fields |
+| `computeQualifierScore()` | Scores 0–100 based on phone, NEET, budget, year, parent call, status |
+| `getQualifierTier()` | hot ≥ 75, warm ≥ 55, nurture ≥ 35, low fit < 35 |
+| `detectMainObjection()` | Keyword scan in notes/budget for budget/parent/eligibility/timeline/trust |
+| `getRecommendedAction()` | Status/tier/objection-based action text |
+| `computeFollowUpStage()` | Status-based or age-based stage progression |
+| `computeFollowUpDueAt()` | 5min / +1d / +3d / +1h / null |
+| `generateFollowUpMessage()` | 5 stage-specific WhatsApp templates with first-name interpolation |
+| `buildWhatsappLink()` | wa.me URL, +91 normalization for 10-digit numbers |
+| `computeOptimizationEvent()` | Status-to-event mapping for ad optimization |
+| `getConversionValue()` | Lead=1 … AdmissionClosed=100 |
+
+This module accepts string dates (ISO 8601) and returns string dates. API routes convert to/from Postgres `Date` objects at the boundary.
+
+## API endpoints
+
+**Public:**
+- `POST /api/leads` — Replaces Apps Script `doPost`. Accepts the same payload shape as `app.js buildLeadPayload()`. Handles `Content-Type: text/plain` (legacy CORS workaround) by falling back to text parsing. Returns `{ ok: true }`.
+
+**Protected (NextAuth session required):**
+- `GET /api/leads` — List with sort/filter/search/pagination
+- `GET /api/leads/[id]` — Single lead + attribution + activity log
+- `PATCH /api/leads/[id]` — Update editable fields, auto-recompute all derived fields, log changes
+- `POST /api/leads/refresh` — Batch recompute all active leads (for daily cron)
+- `GET /api/leads/export` — CSV download matching 39-column Google Sheet format
+
+## Admin dashboard pages
+
+- **`/admin`** — 6 stat cards, follow-up queue (top 10 overdue with WhatsApp links), recent leads
+- **`/admin/leads`** — Sortable/filterable table with inline status dropdown, search, pagination
+- **`/admin/leads/[id]`** — Editable form (status, notes, outcome, NEET, budget, etc.), read-only computed fields, attribution section, activity log, WhatsApp copy/open buttons
+- **`/admin/optimization`** — Campaign aggregation table + funnel chart (same logic as Apps Script `refreshOptimizationDashboard`)
+- **`/admin/login`** — Google OAuth login with server action
+
+## Static marketing pages (`/public`)
+
+The original HTML pages are served unchanged from `/public`:
+
+### Site structure and nav
+All four active pages share the same nav order (no Language link):
 ```
 MBBS IN RUSSIA  |  LIFE IN RUSSIA  |  ADMISSIONS
 ```
+The site title "MBBS WITH DR. SHIVANG" links back to `index.html`.
 
-The site title "MBBS WITH DR. SHIVANG" links back to `index.html` (homepage). There is no separate "Programs" section — the homepage IS the landing page reached by clicking the title.
+### Page notes
+- **index.html** — Greeting animation (variable-font weight bounce), hero gallery, Russia vs India comparison, founder section, testimonial carousel, CTA strip
+- **mbbs.html** — Chuvash featured + supporting unis, course details, fees, eligibility, beyond-admission, FAQ
+- **admissions.html** — Multi-step lead form → success modal with Calendly + WhatsApp CTAs. Form POSTs to `/api/leads`.
+- **life.html** — Student-life lookbook + masonry gallery
+- **language.html** — ORPHANED. No pages link to it. Do not add links back.
 
-## Page-by-page notes
-
-### index.html
-- **Greeting animation:** EF.com-style variable-font weight bounce across 5 languages (English, Hindi, Russian, Tamil, Telugu). Uses Epilogue variable font `font-variation-settings: 'wght'` animating from 100 → 900 on each word. Words cycle every ~1.8 s with fade-in/fade-out keyframes (`word-enter`, `word-exit`). Noto Sans is loaded as a Google Font fallback for Devanagari / Tamil / Telugu / Cyrillic scripts.
-- **#programs section:** Replaced with a full-width **Russia vs India Private comparison** — two columns on desktop, stacked on mobile. Left card (dark `bg-zinc-950`) = Russia recommended path with green-check bullets and fee callouts. Right card (light `bg-surface`) = India private cautionary comparison with warning bullets. Reassurance tagline below: *"Both paths lead to the same Indian medical licence. The difference is ₹50L+ and 3 years of NEET retakes."* Russia card CTA links to `mbbs.html`.
-- **Testimonial carousel:** Three slides, auto-advances every 4 s, dot indicators. Moved here from `life.html`. Note: the testimonials are either real student paraphrases or clearly labelled — do not add fabricated quotes.
-- **Founder photo:** Uses `object-top` to keep Dr. Shivang's face in frame.
-
-### mbbs.html
-Sub-nav and section order (top to bottom):
-1. **Universities** — Chuvash featured card, then three "Also supported" cards (Kazan, Pirogov, Pavlov). Each alternate card has a "Get in touch to know more" CTA leading to `admissions.html`.
-2. **Course Details**
-3. **Fees** — Shows **tuition fee + hostel fee only**. Do not add other line items (flights, food, etc.) to this section; those belong in the first-year breakdown prose.
-4. **Eligibility**
-5. **Beyond Admission** (mentorship services)
-6. **FAQs**
-
-### admissions.html
-- Multi-step form: Step 1 (basic info) → Step 2 (NEET journey) → Step 3 (review) → success modal.
-- **Success modal** has two CTAs: primary = "Book a call with Dr. Shivang" (triggers `Calendly.initPopupWidget({url:'https://calendly.com/samatvaintelligence/30min'})`), secondary = WhatsApp (`data-wa="1"`).
-- Calendly CSS: `https://assets.calendly.com/assets/external/widget.css`
-- Calendly JS: `https://assets.calendly.com/assets/external/widget.js`
-
-### life.html
-- Student-life lookbook and masonry photo gallery.
-- Testimonial section was **moved to `index.html`** — do not re-add it here.
+### Form submission flow
+`assets/app.js` → `buildLeadPayload()` builds the payload, POSTs to `/api/leads` with `mode: "no-cors"` and `Content-Type: text/plain` (legacy from Apps Script CORS workaround). The API handles both JSON and text/plain parsing. The form JS handles both opaque and normal responses.
 
 ## Conventions
 
 ### WhatsApp + tel links
+Anchors with `data-wa="1"` are auto-rewritten by `app.js` to `https://wa.me/919211567773?text=I%20want%20to%20be%20a%20doctor`. Anchors with `data-tel="1"` get the same number on `tel:`. **Don't hard-code the WhatsApp URL** — use the data attribute.
 
-Anchors with `data-wa="1"` are auto-rewritten by `app.js` to `https://wa.me/919211567773?text=I%20want%20to%20be%20a%20doctor`. Anchors with `data-tel="1"` get the same number on `tel:`. **Don't hard-code the WhatsApp URL** — use the data attribute and let `app.js` handle it. Number lives in `assets/app.js` as `WA_NUMBER` / `WA_MESSAGE` constants.
+### Next.js App Router gotchas
+- `params` in route handlers is a **Promise** that must be `await`ed: `const { id } = await params;`
+- Tailwind v4 uses `@import "tailwindcss"` and `@theme inline {}` blocks, not v3's `tailwind.config.js`
+- Static HTML pages in `/public` are served by Next.js as-is — they use Tailwind CDN with inline config (separate from the Next.js Tailwind setup)
 
-### Lead-form state
-
-`assets/app.js → initAdmissionsForm()` keeps a `state` object: `{ fullName, phone, neet, drops, budget, year }`. Each step's required inputs are validated, captured into `state`, and rendered on the review step via `renderReview()`. If you add a new field to `admissions.html`, you must also add it to the `state` object **and** to `renderReview()` — these don't auto-derive.
-
-### Tailwind config sync
-
-Every HTML file ships its own copy of the `tailwind.config = {...}` block (inline `<script id="tailwind-config">`). When changing design tokens, edit them in **all active** HTML files (`index`, `mbbs`, `admissions`, `life`) or visual drift will appear on whichever page you missed. Long-term this should be extracted to a shared partial, but there's no build step to do that today.
+### Tailwind config sync (marketing pages)
+Every HTML file in `/public` ships its own copy of the `tailwind.config = {...}` block. When changing design tokens, edit them in **all active** HTML files or visual drift will appear.
 
 ### Tone
-
 - First-person Dr. Shivang, not "we" / "our team" / "our mentors."
-- Mention drop years matter-of-factly ("Drop years are completely fine — Dr. Shivang dropped three").
 - Use INR, not USD. Audience thinks in lakhs.
-- The Chuvash 2026 numbers are: **₹9.12L** first year (incl. flights), **₹3.35L/yr** thereafter, **₹25.85L total** over 5.8 years. These are headline numbers — don't paraphrase them away.
-- India private college comparison range: **₹70L – 1.5Cr total** (established line, used on both `index.html` and `mbbs.html`).
+- Chuvash 2026 numbers: **₹9.12L** first year, **₹3.35L/yr** thereafter, **₹25.85L total** over 5.8 years
+- India private comparison: **₹70L – 1.5Cr total**
 
 ### Image policy
-
-All photos in `assets/img/` are Dr. Shivang's own (extracted from the brand PDF, ©Dr. Shivang Gupta). Three places still use stock from `lh3.googleusercontent.com/aida-public/...`:
-
-1. The three **"Also supported" university cards** on `mbbs.html` (Kazan, Pirogov, Pavlov) — the PDF only has Chuvash photos.
-2. The **fictional "Ahmed Khan" testimonial avatar** on `index.html` (carousel) — the testimonial copy is fabricated. Putting a real photo behind a fake quote would be a worse honesty problem than stock. The fix is to replace the testimonial entirely with a real student quote.
-
-If you swap an image, also rewrite any caption / `alt` text that referenced the previous image's content.
+All photos in `assets/img/` are Dr. Shivang's own. Three places still use stock: the "Also supported" university cards on `mbbs.html` and the fictional "Ahmed Khan" testimonial avatar on `index.html`.
 
 ### What not to invent
+Don't add metrics that aren't grounded in reality. Honest statements like `3 yrs NEET dropper / 6 yrs MBBS in Russia / 1:1 mentorship` are fine.
 
-The site previously claimed `1.2K+ Students Placed`, `12 Partner Universities`, `100% Visa Success`. **These were fabricated** and have been removed. Don't add metrics that aren't grounded in something real Dr. Shivang has said. Honest replacements like `3 yrs NEET dropper / 6 yrs MBBS in Russia / 1:1 mentorship` are fine.
+## Open work
 
-## Open work (read before starting)
-
-1. **Form backend is not wired.** `admissions.html` collects data, validates, and shows a success modal — but the form's `submit` handler in `app.js` does nothing with the data. Recommended path: **Google Apps Script + Sheet** (each lead becomes a spreadsheet row Dr. Shivang can triage from his phone). Alternatives: Formspree, Cloudflare Worker.
-2. **Testimonial carousel has fabricated quotes.** Replace with real student paraphrases (Dr. Shivang has WhatsApp chats with 30+ students) or remove. The "Ahmed Khan" avatar is stock; do not attach a real photo to a fake quote.
-3. **Three "Also supported" university cards** still use stock imagery (Kazan, Pirogov, Pavlov). Authentic photos would need to come from Dr. Shivang's Instagram or direct outreach.
-4. **Tailwind configs duplicated 4×** (language.html excluded as orphaned). Consider a single `assets/tailwind-config.js` if this becomes painful.
-5. **Custom chat agent (not started).** Dr. Shivang has WhatsApp chat logs from 30+ students. The plan is to feed these to Gemini API (RAG or fine-tune) and embed a chat widget that can answer prospective student queries 24/7. No implementation exists yet.
-6. **Hosting not configured.** Recommended path: **GitHub → Google Cloud Storage** (static bucket + `allUsers` read + `index.html` as website suffix). CI/CD via GitHub Actions (`gsutil rsync -r . gs://bucket-name`). Custom domain via Cloud Load Balancer + managed SSL, or simply use Cloud Storage's direct URL for a quick launch.
+1. **Testimonial carousel has fabricated quotes.** Replace with real student paraphrases or remove.
+2. **Three "Also supported" university cards** still use stock imagery.
+3. **Tailwind configs duplicated 4x** across marketing pages.
+4. **Custom chat agent (not started).** Plan: Gemini API RAG over Dr. Shivang's WhatsApp chat logs.
+5. **Vercel deployment not configured.** Need to set env vars and deploy.
+6. **Supabase project setup.** Need to create project, get connection string, run `npm run db:push`.
+7. **Google OAuth credentials.** Need real `GOOGLE_CLIENT_ID` / `GOOGLE_CLIENT_SECRET` for login.
+8. **Meta Marketing API (Phase 3).** Campaign spend data integration.
+9. **Migration script.** `scripts/migrate-from-sheet.ts` ready — needs CSV export from Google Sheet + `DATABASE_URL` set.
 
 ## Reference: WhatsApp + key numbers
 

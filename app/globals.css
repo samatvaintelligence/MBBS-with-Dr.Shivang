@@ -1,0 +1,40 @@
+@import "tailwindcss";
+
+@theme inline {
+  --color-primary: #b90039;
+  --color-primary-light: #d4004a;
+  --color-surface: #f8f8f6;
+  --color-sidebar: #18181b;
+  --color-card: #ffffff;
+  --color-border: #e4e4e7;
+  --color-muted: #71717a;
+  --color-success: #16a34a;
+  --color-warning: #f59e0b;
+  --color-danger: #ef4444;
+  --color-hot: #ef4444;
+  --color-warm: #f59e0b;
+  --color-nurture: #3b82f6;
+  --color-low-fit: #94a3b8;
+  --font-sans: "Inter", system-ui, -apple-system, sans-serif;
+}
+
+body {
+  font-family: var(--font-sans);
+  background: #f4f4f5;
+  color: #09090b;
+}
+
+/* Shared input styles for admin forms */
+.input {
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #e4e4e7;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.input:focus {
+  border-color: #b90039;
+  box-shadow: 0 0 0 3px rgba(185, 0, 57, 0.1);
+}

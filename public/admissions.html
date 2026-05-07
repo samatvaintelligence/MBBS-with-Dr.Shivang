@@ -74,6 +74,16 @@ tailwind.config = {
       <h1 class="font-display text-[36px] md:text-[52px] leading-[1.05] font-black tracking-tighter text-white mb-4">Talk to Dr. Shivang</h1>
       <p class="text-zinc-400 text-body-lg">Share your name and number. I will save your details, then open WhatsApp so you can message me directly.</p>
       <p class="text-zinc-500 text-body-sm italic mt-3">No fees, no obligation. This is about guidance — not selling.</p>
+      <div class="mt-8 rounded-[24px] border border-primary/40 bg-white/10 p-5 text-left">
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+          <div>
+            <span class="inline-block bg-primary text-white font-label text-[10px] uppercase tracking-widest px-3 py-1 rounded-full mb-3">Limited Offer</span>
+            <p class="font-display text-xl font-black text-white tracking-tight">First 5 confirmed 2026 bookings get a free one-way economy flight ticket from India to Russia.</p>
+          </div>
+          <a href="#admissions-form" class="shrink-0 h-11 px-5 bg-[#25D366] text-white rounded-full font-button text-xs uppercase tracking-widest inline-flex items-center justify-center">I want to be a doctor</a>
+        </div>
+        <p class="mt-4 text-zinc-400 text-[12px] leading-relaxed">Valid for the first 5 students who complete the registration deposit for the 2026 intake. One-way economy ticket from India to Russia. No cash alternative. Final travel date and route coordinated after admission/visa steps.</p>
+      </div>
     </div>
   </section>
 
@@ -96,6 +106,8 @@ tailwind.config = {
           <input type="hidden" name="fbclid" data-attribution-field="fbclid"/>
           <input type="hidden" name="fbc" data-attribution-field="fbc"/>
           <input type="hidden" name="fbp" data-attribution-field="fbp"/>
+          <input type="hidden" name="offer_name" value="free_one_way_flight_2026"/>
+          <input type="hidden" name="offer_claimed" value="yes"/>
         </div>
 
         <div data-step="0" class="space-y-6">
