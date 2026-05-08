@@ -1,0 +1,1054 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1080">
+<title>Creative 2 — Rs 25 Lakh Complete MBBS</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&display=swap');
+
+  /* ── Design System Tokens ── */
+  :root {
+    --midnight:  #0A1628;
+    --navy:      #1E3A5F;
+    --slate:     #64748B;
+    --ivory:     #F7F5F0;
+    --white:     #FFFFFF;
+    --amber:     #E8A317;
+    --coral:     #D94F3D;
+    --sage:      #2D9F6F;
+    --overlay:   rgba(10, 22, 40, 0.55);
+    --overlay-light: rgba(10, 22, 40, 0.40);
+
+    /* Modular scale — Perfect Fourth (1:1.333) from 42px base */
+    --display:  133px;  /* 42 × 1.333⁴ */
+    --h1:       100px;  /* 42 × 1.333³ */
+    --h2:        75px;  /* 42 × 1.333² */
+    --h3:        56px;  /* 42 × 1.333¹ */
+    --body:      42px;  /* base */
+    --small:     32px;  /* 42 ÷ 1.333 */
+    --caption:   24px;  /* 42 ÷ 1.333² */
+
+    /* Grid */
+    --margin:    45px;
+    --col:       66px;
+    --gutter:    18px;
+    --content-w: 990px;
+    --baseline:  24px;
+
+    /* CTA strip */
+    --strip-h:   96px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', sans-serif;
+    background: #080E18;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 40px;
+    padding: 80px 40px 40px;
+    justify-content: center;
+  }
+
+  .slide {
+    width: 1080px;
+    height: 1350px;
+    position: relative;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+
+  /* ── Shared: CTA Strip (bottom of every carousel slide) ── */
+  .cta-strip {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: var(--strip-h);
+    background: var(--navy);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    z-index: 20;
+  }
+  .cta-strip-half {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+  }
+  .cta-strip-half:first-child {
+    border-right: 1px solid var(--slate);
+  }
+  .cta-strip-label {
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: var(--caption);
+    font-weight: 600;
+    color: var(--ivory);
+    letter-spacing: 1px;
+    opacity: 0.7;
+  }
+  .cta-strip-value {
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: var(--small);
+    font-weight: 700;
+    color: var(--amber);
+  }
+
+  /* ── Shared: Watermark ── */
+  .watermark {
+    position: absolute;
+    bottom: 120px;
+    left: var(--margin);
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: var(--caption);
+    font-weight: 600;
+    color: var(--ivory);
+    opacity: 0.4;
+    letter-spacing: 6px;
+    text-transform: uppercase;
+    z-index: 15;
+  }
+
+  /* ══════════════════════════════════════════════════════════ */
+  /* SLIDE 1 — HOOK (Template A)                               */
+  /* ══════════════════════════════════════════════════════════ */
+  .slide-1 {
+    background: var(--midnight);
+  }
+  .slide-1 .bg-photo {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: url('../../public/assets/img/team-scrubs-skull.jpg') center center / cover no-repeat;
+    z-index: 1;
+  }
+  .slide-1 .bg-overlay {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: var(--overlay);
+    z-index: 2;
+  }
+  .slide-1 .content {
+    position: relative;
+    z-index: 10;
+    padding: 72px var(--margin) 0;
+    height: calc(100% - var(--strip-h));
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .slide-1 .pill {
+    display: inline-block;
+    background: var(--amber);
+    color: var(--midnight);
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: var(--small);
+    font-weight: 700;
+    padding: 10px 28px;
+    border-radius: 100px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    width: fit-content;
+    margin-bottom: 48px;
+  }
+  .slide-1 .amount-line {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    margin-bottom: 8px;
+  }
+  .slide-1 .currency {
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: var(--h2);
+    font-weight: 700;
+    color: var(--amber);
+  }
+  .slide-1 .amount {
+    font-family: 'Oswald', sans-serif;
+    font-size: 180px;
+    font-weight: 700;
+    color: var(--amber);
+    line-height: 0.9;
+    letter-spacing: 4px;
+  }
+  .slide-1 .unit {
+    font-family: 'Oswald', sans-serif;
+    font-size: var(--h1);
+    font-weight: 500;
+    color: var(--ivory);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+  }
+  .slide-1 .headline {
+    font-family: 'Oswald', sans-serif;
+    font-size: var(--display);
+    font-weight: 700;
+    color: var(--white);
+    line-height: 1.0;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    margin-top: 16px;
+  }
+  .slide-1 .sub {
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: var(--body);
+    color: var(--ivory);
+    line-height: 1.5;
+    margin-top: 48px;
+    max-width: 800px;
+    opacity: 0.8;
+  }
+  .slide-1 .sub strong {
+    color: var(--white);
+    font-weight: 700;
+  }
+
+  /* ══════════════════════════════════════════════════════════ */
+  /* SLIDE 2 — HEAD-TO-HEAD (Template B variant)               */
+  /* ══════════════════════════════════════════════════════════ */
+  .slide-2 {
+    background: var(--midnight);
+  }
+  .slide-2 .content {
+    padding: 72px var(--margin) 0;
+    height: calc(100% - var(--strip-h));
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+  }
+  .slide-2 .section-label {
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: var(--caption);
+    font-weight: 600;
+    color: var(--slate);
+    letter-spacing: 6px;
+    text-transform: uppercase;
+  }
+  .slide-2 .title {
+    font-family: 'Oswald', sans-serif;
+    font-size: var(--h1);
+    font-weight: 700;
+    color: var(--white);
+    line-height: 1.0;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+  }
+  .slide-2 .title span { color: var(--amber); }
+
+  .comparison-header {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    margin-top: 8px;
+  }
+  .compare-col {
+    flex: 1;
+    text-align: center;
+  }
+  .compare-col .col-label {
+    font-family: 'Oswald', sans-serif;
+    font-size: var(--h3);
+    font-weight: 600;
+    line-height: 1.1;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+  .compare-col.india .col-label { color: var(--coral); }
+  .compare-col.russia .col-label { color: var(--sage); }
+  .vs-badge {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    background: rgba(100, 116, 139, 0.15);
+    border: 2px solid rgba(100, 116, 139, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Oswald', sans-serif;
+    font-size: var(--small);
+    font-weight: 700;
+    color: var(--amber);
+    flex-shrink: 0;
+  }
+
+  .comparison-rows {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+  }
+  .compare-row {
+    display: flex;
+    align-items: center;
+    padding: 20px 0;
+    border-bottom: 1px solid rgba(247, 245, 240, 0.06);
+  }
+  .compare-row .label {
+    width: 200px;
+    text-align: center;
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: var(--small);
+    font-weight: 600;
+    color: var(--slate);
+  }
+  .compare-row .india-val {
+    flex: 1;
+    text-align: center;
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: var(--small);
+    font-weight: 700;
+    color: var(--coral);
+  }
+  .compare-row .russia-val {
+    flex: 1;
+    text-align: center;
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: var(--small);
+    font-weight: 700;
+    color: var(--sage);
+  }
+
+  .total-row {
+    background: rgba(247, 245, 240, 0.04);
+    border: 1px solid rgba(247, 245, 240, 0.08);
+    border-radius: 16px;
+    padding: 28px 32px;
+    display: flex;
+    align-items: center;
+    margin-top: 16px;
+  }
+  .total-row .label {
+    width: 200px;
+    text-align: center;
+    font-family: 'Oswald', sans-serif;
+    font-size: var(--body);
+    font-weight: 700;
+    color: var(--white);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+  .total-row .india-val {
+    flex: 1;
+    text-align: center;
+    font-family: 'Oswald', sans-serif;
+    font-size: var(--h3);
+    font-weight: 700;
+    color: var(--coral);
+  }
+  .total-row .india-val .strike {
+    text-decoration: line-through;
+    text-decoration-thickness: 3px;
+    text-decoration-color: var(--coral);
+  }
+  .total-row .russia-val {
+    flex: 1;
+    text-align: center;
+    font-family: 'Oswald', sans-serif;
+    font-size: var(--h3);
+    font-weight: 700;
+    color: var(--sage);
+  }
+  .slide-2 .footnote {
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: var(--caption);
+    color: var(--slate);
+    text-align: center;
+    line-height: 1.6;
+    opacity: 0.7;
+  }
+
+  /* ══════════════════════════════════════════════════════════ */
+  /* SLIDE 3 — YEAR-BY-YEAR (Template B variant)               */
+  /* ══════════════════════════════════════════════════════════ */
+  .slide-3 {
+    background: var(--midnight);
+  }
+  .slide-3 .content {
+    padding: 72px var(--margin) 0;
+    height: calc(100% - var(--strip-h));
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+  .slide-3 .section-label {
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: var(--caption);
+    font-weight: 600;
+    color: var(--slate);
+    letter-spacing: 6px;
+    text-transform: uppercase;
+  }
+  .slide-3 .title {
+    font-family: 'Oswald', sans-serif;
+    font-size: var(--h2);
+    font-weight: 700;
+    color: var(--white);
+    line-height: 1.1;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+  .slide-3 .title span { color: var(--amber); }
+
+  .year-card {
+    background: rgba(247, 245, 240, 0.04);
+    border: 1px solid rgba(247, 245, 240, 0.06);
+    border-radius: 12px;
+    padding: 24px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .year-card.highlight {
+    background: rgba(45, 159, 111, 0.1);
+    border: 2px solid rgba(45, 159, 111, 0.25);
+  }
+  .year-card .year-name {
+    font-family: 'Oswald', sans-serif;
+    font-size: var(--body);
+    font-weight: 600;
+    color: var(--white);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+  .year-card .year-detail {
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: var(--small);
+    color: var(--slate);
+    margin-top: 4px;
+  }
+  .year-card .year-cost {
+    font-family: 'Oswald', sans-serif;
+    font-size: var(--h3);
+    font-weight: 700;
+    color: var(--amber);
+    letter-spacing: 1px;
+  }
+  .year-card .year-note {
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: var(--caption);
+    color: var(--sage);
+    font-weight: 600;
+    text-align: right;
+    margin-top: 4px;
+  }
+
+  .total-box {
+    background: rgba(232, 163, 23, 0.08);
+    border: 2px solid rgba(232, 163, 23, 0.2);
+    border-radius: 16px;
+    padding: 32px;
+    text-align: center;
+    margin-top: 8px;
+  }
+  .total-box .total-label {
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: var(--small);
+    font-weight: 600;
+    color: var(--ivory);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    opacity: 0.6;
+  }
+  .total-box .total-amount {
+    font-family: 'Oswald', sans-serif;
+    font-size: var(--h1);
+    font-weight: 700;
+    color: var(--amber);
+    letter-spacing: 3px;
+    line-height: 1.2;
+    margin-top: 8px;
+  }
+  .total-box .total-sub {
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: var(--small);
+    color: var(--slate);
+    margin-top: 8px;
+  }
+  .tag-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    justify-content: center;
+    margin-top: 16px;
+  }
+  .tag-row .tag {
+    background: rgba(247, 245, 240, 0.06);
+    border: 1px solid rgba(247, 245, 240, 0.1);
+    color: var(--ivory);
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: var(--caption);
+    font-weight: 600;
+    padding: 8px 20px;
+    border-radius: 100px;
+    opacity: 0.7;
+  }
+
+  /* ══════════════════════════════════════════════════════════ */
+  /* SLIDE 4 — TRUST (Template C / checklist variant)          */
+  /* ══════════════════════════════════════════════════════════ */
+  .slide-4 {
+    background: var(--midnight);
+  }
+  .slide-4 .bg-photo {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: url('../../public/assets/img/shivang-portrait.jpg') center top / cover no-repeat;
+    z-index: 1;
+  }
+  .slide-4 .bg-overlay {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: var(--overlay);
+    z-index: 2;
+  }
+  .slide-4 .content {
+    position: relative;
+    z-index: 10;
+    padding: 72px var(--margin) 0;
+    height: calc(100% - var(--strip-h));
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 40px;
+  }
+  .slide-4 .headline {
+    font-family: 'Oswald', sans-serif;
+    font-size: var(--h2);
+    font-weight: 700;
+    color: var(--white);
+    line-height: 1.1;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+  .slide-4 .headline .coral { color: var(--coral); }
+  .slide-4 .headline .sage { color: var(--sage); }
+
+  .check-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  .check-item {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+  .check-item .icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: var(--caption);
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+  .check-item .icon.positive { background: var(--sage); color: var(--white); }
+  .check-item .icon.negative { background: var(--coral); color: var(--white); }
+  .check-item .text {
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: var(--body);
+    color: var(--ivory);
+    line-height: 1.3;
+    font-weight: 400;
+  }
+  .check-item .text strong {
+    font-weight: 700;
+    color: var(--white);
+  }
+
+  .quote-block {
+    background: rgba(247, 245, 240, 0.05);
+    border-left: 4px solid var(--amber);
+    padding: 24px 32px;
+    border-radius: 0 12px 12px 0;
+  }
+  .quote-block p {
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: var(--small);
+    font-style: italic;
+    color: var(--ivory);
+    line-height: 1.6;
+    opacity: 0.85;
+  }
+  .quote-block .attr {
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: var(--caption);
+    font-style: normal;
+    font-weight: 700;
+    color: var(--amber);
+    margin-top: 12px;
+  }
+
+  /* ══════════════════════════════════════════════════════════ */
+  /* SLIDE 5 — CTA (Template D)                                */
+  /* ══════════════════════════════════════════════════════════ */
+  .slide-5 {
+    background: var(--midnight);
+  }
+  .slide-5 .content {
+    padding: 72px var(--margin) 0;
+    height: calc(100% - var(--strip-h));
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    gap: 32px;
+  }
+  .slide-5 .portrait {
+    width: 280px;
+    height: 280px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 3px solid var(--amber);
+    flex-shrink: 0;
+  }
+  .slide-5 .portrait img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+  }
+  .slide-5 .name {
+    font-family: 'Oswald', sans-serif;
+    font-size: var(--h3);
+    font-weight: 600;
+    color: var(--white);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+  .slide-5 .creds {
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: var(--small);
+    color: var(--slate);
+    line-height: 1.5;
+  }
+  .slide-5 .cta-headline {
+    font-family: 'Oswald', sans-serif;
+    font-size: var(--h2);
+    font-weight: 700;
+    color: var(--white);
+    line-height: 1.1;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    max-width: 800px;
+  }
+  .slide-5 .cta-headline span { color: var(--amber); }
+
+  .slide-5 .wa-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 16px;
+    background: var(--amber);
+    color: var(--midnight);
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: var(--body);
+    font-weight: 700;
+    padding: 20px 56px;
+    border-radius: 12px;
+    text-decoration: none;
+    letter-spacing: 1px;
+  }
+  .slide-5 .offer-line {
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: var(--small);
+    font-weight: 600;
+    color: var(--amber);
+    letter-spacing: 1px;
+  }
+  .slide-5 .trust-line {
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: var(--small);
+    color: var(--slate);
+    line-height: 1.5;
+    max-width: 700px;
+  }
+
+  /* ══════════════════════════════════════════════════════════ */
+  /* Export Bar                                                 */
+  /* ══════════════════════════════════════════════════════════ */
+  .export-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: var(--navy);
+    padding: 16px 40px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    z-index: 9999;
+    border-bottom: 2px solid var(--amber);
+  }
+  .export-bar button {
+    background: var(--amber);
+    color: var(--midnight);
+    border: none;
+    padding: 12px 28px;
+    font-size: 16px;
+    font-weight: 700;
+    border-radius: 8px;
+    cursor: pointer;
+    font-family: 'Source Sans 3', sans-serif;
+  }
+  .export-bar button:hover { opacity: 0.9; }
+  .export-bar .status {
+    color: var(--ivory);
+    font-size: 14px;
+    font-family: 'Source Sans 3', sans-serif;
+    opacity: 0.7;
+  }
+  .export-bar .info {
+    color: var(--slate);
+    font-size: 13px;
+    margin-left: auto;
+    font-family: 'Source Sans 3', sans-serif;
+  }
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+</head>
+<body>
+
+<!-- Export toolbar -->
+<div class="export-bar">
+  <button onclick="exportAllSlides()">Download All Slides as PNG</button>
+  <span class="status" id="export-status">Ready — each slide exports at 1080 x 1350</span>
+  <span class="info">Creative 2: Rs 25 Lakh Complete MBBS</span>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- SLIDE 1 — HOOK                                          -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<div class="slide slide-1">
+  <div class="bg-photo"></div>
+  <div class="bg-overlay"></div>
+  <div class="content">
+    <div class="pill">MBBS Cost Breakdown</div>
+    <div class="amount-line">
+      <span class="currency">Rs</span>
+      <span class="amount">25</span>
+      <span class="unit">Lakh</span>
+    </div>
+    <div class="headline">COMPLETE MBBS.</div>
+    <div class="sub">
+      India private MBBS = <strong>Rs 70L - 1.5 Crore</strong><br>
+      Russia MBBS (Chuvash) = <strong>Rs 25.85 Lakh total</strong><br><br>
+      Same NMC-recognized degree. Same license. Same doctor.
+    </div>
+  </div>
+  <div class="cta-strip">
+    <div class="cta-strip-half">
+      <span class="cta-strip-label">Contact</span>
+      <span class="cta-strip-value">+91 9211567773</span>
+    </div>
+    <div class="cta-strip-half">
+      <span class="cta-strip-label">Follow</span>
+      <span class="cta-strip-value">@MBBSwithDr.shivang</span>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- SLIDE 2 — HEAD-TO-HEAD COMPARISON                       -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<div class="slide slide-2">
+  <div class="content">
+    <div class="section-label">Head-to-Head</div>
+    <div class="title">INDIA PRIVATE <span>VS</span> RUSSIA</div>
+
+    <div class="comparison-header">
+      <div class="compare-col india">
+        <div class="col-label">INDIA<br>PRIVATE</div>
+      </div>
+      <div class="vs-badge">VS</div>
+      <div class="compare-col russia">
+        <div class="col-label">RUSSIA<br>CHUVASH</div>
+      </div>
+    </div>
+
+    <div class="comparison-rows">
+      <div class="compare-row">
+        <div class="india-val">Rs 15-25L/yr</div>
+        <div class="label">Tuition</div>
+        <div class="russia-val">Rs 3.35L/yr</div>
+      </div>
+      <div class="compare-row">
+        <div class="india-val">Rs 30-80L</div>
+        <div class="label">Donation</div>
+        <div class="russia-val">Rs 0</div>
+      </div>
+      <div class="compare-row">
+        <div class="india-val">Rs 2-5L/yr</div>
+        <div class="label">Hostel</div>
+        <div class="russia-val">Included</div>
+      </div>
+      <div class="compare-row">
+        <div class="india-val">Rs 5-10L</div>
+        <div class="label">Agent Fee</div>
+        <div class="russia-val">Rs 0</div>
+      </div>
+      <div class="compare-row">
+        <div class="india-val">4.5 yrs</div>
+        <div class="label">Duration</div>
+        <div class="russia-val">5.8 yrs</div>
+      </div>
+      <div class="compare-row">
+        <div class="india-val">&#10003;</div>
+        <div class="label">NMC Valid</div>
+        <div class="russia-val">&#10003;</div>
+      </div>
+    </div>
+
+    <div class="total-row">
+      <div class="india-val"><span class="strike">Rs 70L - 1.5Cr</span></div>
+      <div class="label">TOTAL</div>
+      <div class="russia-val">Rs 25.85L</div>
+    </div>
+
+    <div class="footnote">
+      Chuvash State University, 2026 intake.<br>
+      India figures from private/deemed colleges across India.
+    </div>
+  </div>
+  <div class="watermark">@MBBSWITHDR.SHIVANG</div>
+  <div class="cta-strip">
+    <div class="cta-strip-half">
+      <span class="cta-strip-label">Contact</span>
+      <span class="cta-strip-value">+91 9211567773</span>
+    </div>
+    <div class="cta-strip-half">
+      <span class="cta-strip-label">Follow</span>
+      <span class="cta-strip-value">@MBBSwithDr.shivang</span>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- SLIDE 3 — YEAR-BY-YEAR BREAKDOWN                        -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<div class="slide slide-3">
+  <div class="content">
+    <div class="section-label">Chuvash 2026 — Year-Wise Fees</div>
+    <div class="title">THE FULL <span>5.8 YEAR</span><br>BREAKDOWN</div>
+
+    <div class="year-card highlight">
+      <div>
+        <div class="year-name">Year 1</div>
+        <div class="year-detail">Tuition + Hostel + Flights</div>
+      </div>
+      <div style="text-align: right;">
+        <div class="year-cost">Rs 9.12L</div>
+        <div class="year-note">Everything included</div>
+      </div>
+    </div>
+
+    <div class="year-card">
+      <div>
+        <div class="year-name">Year 2</div>
+        <div class="year-detail">Tuition + Hostel</div>
+      </div>
+      <div style="text-align: right;">
+        <div class="year-cost">Rs 3.35L</div>
+      </div>
+    </div>
+
+    <div class="year-card">
+      <div>
+        <div class="year-name">Year 3</div>
+        <div class="year-detail">Tuition + Hostel</div>
+      </div>
+      <div style="text-align: right;">
+        <div class="year-cost">Rs 3.35L</div>
+      </div>
+    </div>
+
+    <div class="year-card">
+      <div>
+        <div class="year-name">Year 4</div>
+        <div class="year-detail">Tuition + Hostel</div>
+      </div>
+      <div style="text-align: right;">
+        <div class="year-cost">Rs 3.35L</div>
+      </div>
+    </div>
+
+    <div class="year-card">
+      <div>
+        <div class="year-name">Year 5-6</div>
+        <div class="year-detail">Tuition + Hostel (1.8 years)</div>
+      </div>
+      <div style="text-align: right;">
+        <div class="year-cost">Rs 6.68L</div>
+      </div>
+    </div>
+
+    <div class="total-box">
+      <div class="total-label">Total Cost (5.8 Years)</div>
+      <div class="total-amount">RS 25.85 LAKH</div>
+      <div class="total-sub">Flights, hostel, tuition — everything included</div>
+      <div class="tag-row">
+        <span class="tag">Tuition</span>
+        <span class="tag">Hostel</span>
+        <span class="tag">Flights</span>
+        <span class="tag">No Agent Fee</span>
+        <span class="tag">No Donation</span>
+      </div>
+    </div>
+  </div>
+  <div class="watermark">@MBBSWITHDR.SHIVANG</div>
+  <div class="cta-strip">
+    <div class="cta-strip-half">
+      <span class="cta-strip-label">Contact</span>
+      <span class="cta-strip-value">+91 9211567773</span>
+    </div>
+    <div class="cta-strip-half">
+      <span class="cta-strip-label">Follow</span>
+      <span class="cta-strip-value">@MBBSwithDr.shivang</span>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- SLIDE 4 — TRUST                                         -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<div class="slide slide-4">
+  <div class="bg-photo"></div>
+  <div class="bg-overlay"></div>
+  <div class="content">
+    <div class="headline">
+      WHAT AGENTS <span class="coral">DON'T</span> TELL YOU.<br>
+      I <span class="sage">DO.</span>
+    </div>
+
+    <div class="check-list">
+      <div class="check-item">
+        <div class="icon negative">&#10007;</div>
+        <div class="text">Agent fee: <strong>Rs 2-3 lakh extra</strong></div>
+      </div>
+      <div class="check-item">
+        <div class="icon positive">&#10003;</div>
+        <div class="text">My fee: <strong>Rs 0. Free guidance.</strong></div>
+      </div>
+      <div class="check-item">
+        <div class="icon negative">&#10007;</div>
+        <div class="text">"We'll discuss fees later" — agents</div>
+      </div>
+      <div class="check-item">
+        <div class="icon positive">&#10003;</div>
+        <div class="text"><strong>Full breakdown upfront</strong> — nothing hidden</div>
+      </div>
+      <div class="check-item">
+        <div class="icon negative">&#10007;</div>
+        <div class="text">Agent: runs on commission</div>
+      </div>
+      <div class="check-item">
+        <div class="icon positive">&#10003;</div>
+        <div class="text"><strong>I'm a doctor</strong> — I studied there myself</div>
+      </div>
+    </div>
+
+    <div class="quote-block">
+      <p>"I'm not a consultant or agent. I'm a doctor who's helping you because I've been through this myself."</p>
+      <div class="attr">— Dr. Shivang Gupta, MBBS (Russia)</div>
+    </div>
+  </div>
+  <div class="watermark">@MBBSWITHDR.SHIVANG</div>
+  <div class="cta-strip">
+    <div class="cta-strip-half">
+      <span class="cta-strip-label">Contact</span>
+      <span class="cta-strip-value">+91 9211567773</span>
+    </div>
+    <div class="cta-strip-half">
+      <span class="cta-strip-label">Follow</span>
+      <span class="cta-strip-value">@MBBSwithDr.shivang</span>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- SLIDE 5 — CTA                                           -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<div class="slide slide-5">
+  <div class="content">
+    <div class="portrait">
+      <img src="../../public/assets/img/shivang-portrait.jpg" alt="Dr. Shivang Gupta">
+    </div>
+    <div class="name">Dr. Shivang Gupta</div>
+    <div class="creds">
+      MBBS — Chuvash State University, Russia<br>
+      Intern — G.R.M.C. Gwalior (Govt Hospital)
+    </div>
+    <div class="cta-headline">
+      YOUR MBBS DREAM.<br>
+      <span>RS 25.85 LAKH.</span><br>
+      IT'S REAL.
+    </div>
+    <div class="offer-line">FREE COUNSELING. NO FEES. NO AGENTS.</div>
+    <div class="wa-btn">
+      <span style="font-size: 42px;">&#9993;</span>
+      WhatsApp Now — It's Free
+    </div>
+    <div class="trust-line">
+      No agent fee. No hidden charges.<br>
+      Just honest guidance from someone who's been there.
+    </div>
+  </div>
+  <div class="cta-strip">
+    <div class="cta-strip-half">
+      <span class="cta-strip-label">Contact</span>
+      <span class="cta-strip-value">+91 9211567773</span>
+    </div>
+    <div class="cta-strip-half">
+      <span class="cta-strip-label">Follow</span>
+      <span class="cta-strip-value">@MBBSwithDr.shivang</span>
+    </div>
+  </div>
+</div>
+
+<script>
+async function exportAllSlides() {
+  const status = document.getElementById('export-status');
+  const slides = document.querySelectorAll('.slide');
+  const exportBar = document.querySelector('.export-bar');
+
+  exportBar.style.display = 'none';
+
+  for (let i = 0; i < slides.length; i++) {
+    status.textContent = `Exporting slide ${i + 1} of ${slides.length}...`;
+
+    try {
+      const canvas = await html2canvas(slides[i], {
+        width: 1080,
+        height: 1350,
+        scale: 1,
+        useCORS: true,
+        allowTaint: true,
+        backgroundColor: null,
+        logging: false,
+      });
+
+      const link = document.createElement('a');
+      link.download = `creative-2-slide-${i + 1}.png`;
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+
+      await new Promise(r => setTimeout(r, 500));
+    } catch (err) {
+      console.error(`Slide ${i + 1} export failed:`, err);
+    }
+  }
+
+  exportBar.style.display = 'flex';
+  status.textContent = `Done! ${slides.length} slides exported as PNG.`;
+}
+</script>
+
+</body>
+</html>

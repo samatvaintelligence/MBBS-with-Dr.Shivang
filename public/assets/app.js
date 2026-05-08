@@ -7,6 +7,9 @@ const FACEBOOK_URL = "https://www.facebook.com/share/18g92rEW95/?mibextid=wwXIfr
 const CALENDLY_URL = "https://calendly.com/samatvaintelligence/30min";
 const OFFER_NAME = "free_one_way_flight_2026";
 const OFFER_CLAIMED = "yes";
+const OFFER_TITLE = "First 5 confirmed 2026 bookings get a free one-way economy flight ticket from India to Russia.";
+const OFFER_TERMS = "Valid for the first 5 students who complete the registration deposit for the 2026 intake. One-way economy ticket from India to Russia. No cash alternative. Final travel date and route coordinated after admission/visa steps.";
+const OFFER_POPUP_SESSION_KEY = `${OFFER_NAME}:popup_dismissed_v2`;
 
 // Paste the deployed Google Apps Script web app URL here after deployment.
 const LEAD_ENDPOINT_URL = "/api/leads";
@@ -41,6 +44,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initFeeCurrencyToggle();
   initLanguageToggle();
   initAdmissionsForm();
+  initOfferPopup();
 });
 
 function initAttribution() {
@@ -529,6 +533,354 @@ function initAdmissionsForm() {
   });
 
   show(0);
+}
+
+function initOfferPopup() {
+  if (document.querySelector("[data-offer-popup]") || hasDismissedOfferPopup()) return;
+
+  injectOfferPopupStyles();
+
+  const popup = document.createElement("div");
+  popup.className = "offer-popup";
+  popup.setAttribute("data-offer-popup", "1");
+  popup.hidden = true;
+
+  const ctaHref = getOfferCtaHref();
+  popup.innerHTML = `
+    <div class="offer-popup__backdrop" data-offer-close></div>
+    <section class="offer-popup__dialog" role="dialog" aria-modal="true" aria-labelledby="offer-popup-title" tabindex="-1">
+      <button type="button" class="offer-popup__close" data-offer-close aria-label="Close offer">Close</button>
+      <div class="offer-popup__ticket" aria-hidden="true">
+        <div class="offer-popup__route"><span>INDIA</span><i></i><span>RUSSIA</span></div>
+        <div class="offer-popup__stamp">2026 intake</div>
+      </div>
+      <div class="offer-popup__content">
+        <span class="offer-popup__eyebrow">Limited Offer</span>
+        <h2 id="offer-popup-title" class="offer-popup__title">${escapeHtml(OFFER_TITLE)}</h2>
+        <p class="offer-popup__note">Eligibility starts after the registration deposit, not after a form submission.</p>
+        <div class="offer-popup__actions">
+          <a class="offer-popup__cta" href="${ctaHref}" data-offer-cta>I want to be a doctor</a>
+          <button type="button" class="offer-popup__secondary" data-offer-close>Maybe later</button>
+        </div>
+        <p class="offer-popup__terms">${escapeHtml(OFFER_TERMS)}</p>
+      </div>
+    </section>
+  `;
+
+  document.body.appendChild(popup);
+
+  const dialog = popup.querySelector(".offer-popup__dialog");
+  const previouslyFocused = document.activeElement;
+
+  function openPopup() {
+    popup.hidden = false;
+    document.documentElement.classList.add("offer-popup-lock");
+    document.body.classList.add("offer-popup-lock");
+    requestAnimationFrame(() => {
+      popup.classList.add("is-open");
+      if (dialog) dialog.focus({ preventScroll: true });
+    });
+  }
+
+  function closePopup() {
+    rememberOfferPopupDismissal();
+    popup.classList.remove("is-open");
+    document.documentElement.classList.remove("offer-popup-lock");
+    document.body.classList.remove("offer-popup-lock");
+    setTimeout(() => {
+      popup.hidden = true;
+      if (previouslyFocused && typeof previouslyFocused.focus === "function") {
+        previouslyFocused.focus({ preventScroll: true });
+      }
+    }, 220);
+  }
+
+  popup.querySelectorAll("[data-offer-close]").forEach((el) => {
+    el.addEventListener("click", closePopup);
+  });
+
+  const cta = popup.querySelector("[data-offer-cta]");
+  if (cta) {
+    cta.addEventListener("click", closePopup);
+  }
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && popup.classList.contains("is-open")) {
+      closePopup();
+    }
+  });
+
+  setTimeout(openPopup, 700);
+}
+
+function getOfferCtaHref() {
+  const currentPage = window.location.pathname.split("/").pop() || "index.html";
+  return currentPage === "admissions.html" ? "#admissions-form" : "admissions.html";
+}
+
+function hasDismissedOfferPopup() {
+  try {
+    return sessionStorage.getItem(OFFER_POPUP_SESSION_KEY) === "yes";
+  } catch (err) {
+    return false;
+  }
+}
+
+function rememberOfferPopupDismissal() {
+  try {
+    sessionStorage.setItem(OFFER_POPUP_SESSION_KEY, "yes");
+  } catch (err) {
+    // Storage can be blocked; the close action should still work.
+  }
+}
+
+function injectOfferPopupStyles() {
+  if (document.getElementById("offer-popup-styles")) return;
+
+  const style = document.createElement("style");
+  style.id = "offer-popup-styles";
+  style.textContent = `
+    html.offer-popup-lock,
+    body.offer-popup-lock {
+      overflow: hidden;
+    }
+
+    .offer-popup,
+    .offer-popup * {
+      box-sizing: border-box;
+    }
+
+    .offer-popup[hidden] {
+      display: none;
+    }
+
+    .offer-popup {
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      color: #111113;
+      font-family: "Manrope", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 220ms ease;
+    }
+
+    .offer-popup.is-open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .offer-popup__backdrop {
+      position: absolute;
+      inset: 0;
+      background: rgba(12, 12, 14, 0.58);
+      backdrop-filter: blur(10px);
+    }
+
+    .offer-popup__dialog {
+      position: relative;
+      width: min(560px, 100%);
+      max-height: calc(100vh - 40px);
+      overflow: auto;
+      border: 1px solid rgba(185, 0, 57, 0.22);
+      border-radius: 24px;
+      background: #fff;
+      box-shadow: 0 28px 90px rgba(0, 0, 0, 0.28);
+      transform: translateY(18px) scale(0.98);
+      transition: transform 220ms ease;
+      outline: none;
+    }
+
+    .offer-popup.is-open .offer-popup__dialog {
+      transform: translateY(0) scale(1);
+    }
+
+    .offer-popup__close {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      z-index: 2;
+      height: 34px;
+      padding: 0 13px;
+      border: 1px solid rgba(255, 255, 255, 0.36);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.16);
+      color: #fff;
+      font: 800 10px/1 "Epilogue", system-ui, sans-serif;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      cursor: pointer;
+    }
+
+    .offer-popup__ticket {
+      padding: 28px 104px 28px 26px;
+      background: #111113;
+      color: #fff;
+    }
+
+    .offer-popup__route {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      align-items: center;
+      gap: 14px;
+      font: 900 13px/1 "Epilogue", system-ui, sans-serif;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+
+    .offer-popup__route i {
+      display: block;
+      height: 1px;
+      border-top: 1px dashed rgba(255, 255, 255, 0.62);
+      position: relative;
+    }
+
+    .offer-popup__route i::after {
+      content: "";
+      position: absolute;
+      right: -1px;
+      top: -4px;
+      width: 8px;
+      height: 8px;
+      border-top: 1px solid rgba(255, 255, 255, 0.8);
+      border-right: 1px solid rgba(255, 255, 255, 0.8);
+      transform: rotate(45deg);
+    }
+
+    .offer-popup__stamp {
+      width: fit-content;
+      margin-top: 18px;
+      border: 1px solid rgba(255, 255, 255, 0.28);
+      border-radius: 999px;
+      padding: 8px 12px;
+      color: rgba(255, 255, 255, 0.76);
+      font: 800 10px/1 "Epilogue", system-ui, sans-serif;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+
+    .offer-popup__content {
+      padding: 30px 30px 28px;
+    }
+
+    .offer-popup__eyebrow {
+      display: inline-flex;
+      align-items: center;
+      min-height: 27px;
+      margin-bottom: 14px;
+      border-radius: 999px;
+      background: #b90039;
+      color: #fff;
+      padding: 0 12px;
+      font: 800 10px/1 "Epilogue", system-ui, sans-serif;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .offer-popup__title {
+      margin: 0;
+      max-width: 13em;
+      font: 900 clamp(28px, 4.2vw, 42px)/0.98 "Epilogue", system-ui, sans-serif;
+      letter-spacing: 0;
+      color: #111113;
+    }
+
+    .offer-popup__note {
+      margin: 16px 0 0;
+      color: #55545c;
+      font-size: 15px;
+      line-height: 1.5;
+      font-weight: 700;
+    }
+
+    .offer-popup__actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-top: 24px;
+    }
+
+    .offer-popup__cta,
+    .offer-popup__secondary {
+      min-height: 48px;
+      border-radius: 999px;
+      padding: 0 20px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: 0;
+      text-decoration: none;
+      font: 900 11px/1 "Epilogue", system-ui, sans-serif;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      cursor: pointer;
+    }
+
+    .offer-popup__cta {
+      background: #25D366;
+      color: #fff;
+      flex: 1;
+    }
+
+    .offer-popup__secondary {
+      background: #f3f3f5;
+      color: #55545c;
+    }
+
+    .offer-popup__terms {
+      margin: 18px 0 0;
+      color: #76737c;
+      font-size: 12px;
+      line-height: 1.55;
+      font-weight: 600;
+    }
+
+    @media (max-width: 640px) {
+      .offer-popup {
+        align-items: flex-end;
+        padding: 12px;
+      }
+
+      .offer-popup__dialog {
+        max-height: calc(100vh - 24px);
+        border-radius: 22px;
+      }
+
+      .offer-popup__ticket {
+        padding: 24px 92px 24px 20px;
+      }
+
+      .offer-popup__content {
+        padding: 24px 20px 22px;
+      }
+
+      .offer-popup__title {
+        max-width: none;
+      }
+
+      .offer-popup__actions {
+        align-items: stretch;
+        flex-direction: column;
+      }
+
+      .offer-popup__secondary {
+        min-height: 42px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .offer-popup,
+      .offer-popup__dialog {
+        transition: none;
+      }
+    }
+  `;
+
+  document.head.appendChild(style);
 }
 
 function getElementText(el) {

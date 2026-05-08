@@ -96,8 +96,6 @@ tailwind.config = {
           <input type="hidden" name="fbclid" data-attribution-field="fbclid"/>
           <input type="hidden" name="fbc" data-attribution-field="fbc"/>
           <input type="hidden" name="fbp" data-attribution-field="fbp"/>
-          <input type="hidden" name="offer_name" value="free_one_way_flight_2026"/>
-          <input type="hidden" name="offer_claimed" value="yes"/>
         </div>
 
         <div data-step="0" class="space-y-6">
@@ -125,6 +123,35 @@ tailwind.config = {
 
       </form>
 
+      <div id="payment-section" class="hidden space-y-5 mt-2">
+        <div class="text-center py-6">
+          <div class="w-16 h-16 bg-accent-success/10 rounded-full flex items-center justify-center mx-auto mb-4">
+            <span class="material-symbols-outlined text-accent-success" style="font-size:36px;font-variation-settings:'FILL' 1,'wght' 400,'GRAD' 0,'opsz' 24">check_circle</span>
+          </div>
+          <h2 class="font-display text-h1 font-black tracking-tighter mb-2">Details saved!</h2>
+          <p class="text-muted text-body-sm max-w-sm mx-auto">Reserve your seat for the 2026 intake by paying the ₹15,000 booking fee. Scan the QR or tap the button below.</p>
+        </div>
+
+        <div data-upi-block class="rounded-2xl border border-border-subtle bg-surface p-6 flex flex-col items-center gap-4">
+          <p class="font-label text-xs uppercase tracking-widest text-muted">Scan with any UPI app</p>
+          <img data-upi-qr src="" alt="UPI QR code — ₹15,000 booking fee" class="w-52 h-52 rounded-xl bg-white"/>
+          <div class="text-center">
+            <p class="font-display font-black text-2xl text-primary">₹15,000</p>
+            <p class="text-muted text-body-sm mt-1">Booking Fee · MBBS 2026 Intake</p>
+          </div>
+        </div>
+
+        <a data-upi-pay href="#" class="w-full h-14 bg-primary text-white rounded-full font-button uppercase tracking-widest flex items-center justify-center gap-2 hover:brightness-95 transition-all active:scale-[0.99]">
+          Pay ₹15,000 via UPI App
+        </a>
+
+        <a data-wa-payment href="#" target="_blank" rel="noopener noreferrer" class="w-full h-14 bg-[#25D366] text-white rounded-full font-button uppercase tracking-widest flex items-center justify-center gap-3 hover:brightness-95 transition-all active:scale-[0.99]">
+          <img src="assets/icons/whatsapp.svg" alt="" class="w-6 h-6"/> Confirm payment on WhatsApp
+        </a>
+
+        <p class="text-muted text-[13px] leading-relaxed text-center">After paying, send Dr. Shivang a screenshot on WhatsApp. Your seat will be confirmed within 2 hours.</p>
+      </div>
+
       <div id="lead-submit-error" class="hidden mt-6 rounded-[24px] border border-error-red/30 bg-error-container p-5">
         <p data-lead-error-message class="text-on-error-container text-body-sm font-bold">I couldn't save this form right now.</p>
         <a data-wa="1" href="#" class="mt-4 inline-flex h-11 px-5 items-center justify-center gap-2 rounded-full bg-[#25D366] text-white font-button uppercase tracking-widest text-xs">
@@ -132,7 +159,7 @@ tailwind.config = {
         </a>
       </div>
 
-      <div class="mt-10 md:mt-12 grid grid-cols-3 gap-3 md:gap-4 text-center">
+      <div id="form-stats" class="mt-10 md:mt-12 grid grid-cols-3 gap-3 md:gap-4 text-center">
         <div><div class="font-display font-black text-2xl text-primary">2 hrs</div><div class="font-label text-[10px] uppercase tracking-widest text-muted mt-1">Response time</div></div>
         <div><div class="font-display font-black text-2xl text-primary">Free</div><div class="font-label text-[10px] uppercase tracking-widest text-muted mt-1">No-obligation call</div></div>
         <div><div class="font-display font-black text-2xl text-primary">1:1</div><div class="font-label text-[10px] uppercase tracking-widest text-muted mt-1">With Dr. Shivang</div></div>

@@ -286,7 +286,14 @@ export function computeFollowUpDueAt(
   return dueAt.toISOString();
 }
 
-/** Port of getFollowUpMessage() — lead-capture.gs lines 731-746 */
+/**
+ * Port of getFollowUpMessage() — lead-capture.gs lines 731-746.
+ *
+ * Updated for 2026 campaign: messages are more conversational (Hinglish),
+ * include social proof and credentials, and address the 4 trust gaps
+ * identified in the marketing plan (no office, no past batches,
+ * competitor offers, slow follow-up).
+ */
 export function generateFollowUpMessage(
   stage: string,
   lead: LeadData
@@ -294,19 +301,45 @@ export function generateFollowUpMessage(
   const firstName = getFirstName(lead.fullName);
 
   if (stage === "parent call booking") {
-    return `Hi ${firstName}, this is Dr. Shivang. Based on your form, the best next step is a parent call so I can explain MBBS in Russia clearly, including fees, eligibility, and documents. Talking with me is completely free.`;
+    return `Hi ${firstName}, Dr. Shivang here. Tumhara form mila. Best next step: ek free call jismein main tumhare parents ko fees, eligibility, documents, aur safety - sab clearly explain kar sakta hoon.
+
+Main khud Russia se MBBS graduate hoon aur currently G.R.M.C Gwalior (govt hospital) mein intern. Ye guidance hai - selling nahi. Parents ke liye convenient time batao.`;
   }
   if (stage === "24h no-reply fee reminder") {
-    return `Hi ${firstName}, sharing the Chuvash 2026 fee summary again: around Rs 9.12L first year including flights, then around Rs 3.35L per year, total around Rs 25.85L over 5.8 years. This is guidance, not selling. I can explain it to your parent on a free call.`;
+    return `Hi ${firstName}, Chuvash 2026 ka quick fee summary:
+
+Year 1: Rs 9.12L (flights + hostel + everything included)
+Years 2-6: Rs 3.35L/year
+Total: Rs 25.85L over 5.8 years
+
+Compare: India private MBBS = Rs 70L - 1.5Cr. Same NMC degree, same license.
+
+No agent fee. No hidden charges. Main doctor hoon, consultant nahi. Parents se baat karwao - free hai.`;
   }
   if (stage === "3d no-reply story + FAQ") {
-    return `Hi ${firstName}, I also had drop years before MBBS, so I understand the pressure around NEET and private college fees. If Russia is still on your mind, I can answer parent questions honestly from my own MBBS experience.`;
+    return `Hi ${firstName}, maine bhi 3 baar NEET drop kiya tha - isliye NEET pressure aur private college fees ka tension samajhta hoon.
+
+Agar Russia abhi bhi mind mein hai toh bata doon - Chuvash mein Indian students ki community hai, Indian mess hai, aur NMC recognized degree milti hai.
+
+Parents ke sawaal hain? Unse seedha baat kar sakta hoon. Mera koi charge nahi hai - ye real guidance hai, experienced doctor se.`;
   }
   if (stage === "retarget proof/FAQ") {
-    return `Hi ${firstName}, I am sharing a few common parent questions about MBBS in Russia, Chuvash, fees, and life there. No agent or consultant can offer this kind of real-world support.`;
+    return `Hi ${firstName}, parents ke common sawaal about Russia MBBS:
+
+Q: Degree India mein chalegi? A: Haan - NMC + WHO recognized. Main khud wahan se MBBS karke India mein practice kar raha hoon.
+
+Q: Safe hai? A: Cheboksary safe university city hai. Indian mess + student community hai.
+
+Q: Cost kitna? A: Rs 25.85L total vs Rs 70L+ India private.
+
+Video testimonials chahiye toh bolo - students ne apna experience share kiya hai. No agent, no selling.`;
   }
   // Default: new lead acknowledgement
-  return `Hi ${firstName}, this is Dr. Shivang. I received your MBBS Russia form. Talking with me is completely free, and this is about guidance - not selling. I can help you understand Chuvash 2026, fees, eligibility, and parent call next steps.`;
+  return `Hi ${firstName}, main Dr. Shivang - Russia se MBBS graduate, currently G.R.M.C Gwalior mein govt hospital intern.
+
+Tumhara MBBS Russia form mila. Baat karna completely free hai aur ye guidance hai - selling nahi.
+
+Chuvash 2026 intake ke baare mein fees, eligibility, documents - sab bataunga. Reply karo ya call karo - main available hoon.`;
 }
 
 // ---------------------------------------------------------------------------

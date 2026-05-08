@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1080">
+<title>Creative 1 — NEET khatam hua. Ab kya?</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800;900&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Poppins', sans-serif;
+    background: #111;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 40px;
+    padding: 40px;
+    justify-content: center;
+  }
+
+  .slide {
+    width: 1080px;
+    height: 1350px;
+    position: relative;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+
+  /* ── Slide 1: Hook ── */
+  .slide-1 {
+    background: linear-gradient(170deg, #0a0a0a 0%, #1a1a2e 40%, #16213e 100%);
+  }
+  .slide-1 .bg-photo {
+    position: absolute;
+    right: -40px;
+    bottom: 0;
+    width: 750px;
+    height: auto;
+    opacity: 0.35;
+    filter: grayscale(40%);
+  }
+  .slide-1 .content {
+    position: relative;
+    z-index: 2;
+    padding: 80px 60px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .slide-1 .tag {
+    display: inline-block;
+    background: #e74c3c;
+    color: #fff;
+    font-size: 28px;
+    font-weight: 700;
+    padding: 12px 28px;
+    border-radius: 8px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    width: fit-content;
+  }
+  .slide-1 .hook {
+    font-size: 96px;
+    font-weight: 900;
+    color: #fff;
+    line-height: 1.1;
+    max-width: 900px;
+  }
+  .slide-1 .hook span {
+    color: #f39c12;
+  }
+  .slide-1 .sub {
+    font-size: 34px;
+    color: rgba(255,255,255,0.7);
+    font-weight: 400;
+    max-width: 700px;
+    line-height: 1.5;
+  }
+  .slide-1 .brand {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    color: rgba(255,255,255,0.5);
+    font-size: 24px;
+    font-weight: 600;
+  }
+  .slide-1 .brand .dot {
+    width: 12px;
+    height: 12px;
+    background: #27ae60;
+    border-radius: 50%;
+  }
+  .carousel-dots {
+    position: absolute;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 12px;
+    z-index: 10;
+  }
+  .carousel-dots .dot {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.3);
+  }
+  .carousel-dots .dot.active {
+    background: #fff;
+  }
+
+  /* ── Slide 2: The Struggle ── */
+  .slide-2 {
+    background: linear-gradient(170deg, #1a1a2e 0%, #0f0f23 100%);
+  }
+  .slide-2 .content {
+    position: relative;
+    z-index: 2;
+    padding: 80px 60px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 50px;
+  }
+  .slide-2 .year-label {
+    font-size: 28px;
+    color: rgba(255,255,255,0.4);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+  }
+  .timeline-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 30px;
+  }
+  .timeline-marker {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+  .timeline-marker .circle {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    font-weight: 800;
+    flex-shrink: 0;
+  }
+  .timeline-marker .line {
+    width: 4px;
+    height: 60px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 2px;
+  }
+  .fail .circle { background: #e74c3c; color: #fff; }
+  .win .circle { background: #27ae60; color: #fff; }
+  .timeline-text h3 {
+    font-size: 42px;
+    font-weight: 800;
+    color: #fff;
+    line-height: 1.2;
+  }
+  .timeline-text p {
+    font-size: 28px;
+    color: rgba(255,255,255,0.5);
+    font-weight: 400;
+    margin-top: 6px;
+  }
+  .slide-2 .big-number {
+    font-size: 200px;
+    font-weight: 900;
+    color: rgba(231, 76, 60, 0.08);
+    position: absolute;
+    right: 40px;
+    top: 60px;
+  }
+
+  /* ── Slide 3: The Turn ── */
+  .slide-3 {
+    background: linear-gradient(170deg, #0f3460 0%, #16213e 50%, #1a1a2e 100%);
+  }
+  .slide-3 .photo-strip {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 550px;
+    overflow: hidden;
+  }
+  .slide-3 .photo-strip img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: brightness(0.5);
+  }
+  .slide-3 .photo-strip::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 200px;
+    background: linear-gradient(transparent, #16213e);
+  }
+  .slide-3 .content {
+    position: relative;
+    z-index: 2;
+    padding: 80px 60px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    gap: 30px;
+  }
+  .slide-3 .decision-tag {
+    display: inline-block;
+    background: rgba(46, 134, 222, 0.2);
+    border: 2px solid #2e86de;
+    color: #2e86de;
+    font-size: 26px;
+    font-weight: 700;
+    padding: 10px 24px;
+    border-radius: 8px;
+    width: fit-content;
+  }
+  .slide-3 .headline {
+    font-size: 72px;
+    font-weight: 900;
+    color: #fff;
+    line-height: 1.15;
+  }
+  .slide-3 .headline span { color: #f39c12; }
+  .slide-3 .details {
+    font-size: 30px;
+    color: rgba(255,255,255,0.65);
+    line-height: 1.6;
+  }
+
+  /* ── Slide 4: The Result ── */
+  .slide-4 {
+    background: linear-gradient(170deg, #0a3d2a 0%, #0d4b34 50%, #1a1a2e 100%);
+  }
+  .slide-4 .photo-strip {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 650px;
+    overflow: hidden;
+  }
+  .slide-4 .photo-strip img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+  }
+  .slide-4 .photo-strip::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 250px;
+    background: linear-gradient(transparent, #0d4b34);
+  }
+  .slide-4 .content {
+    position: relative;
+    z-index: 2;
+    padding: 80px 60px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    gap: 20px;
+  }
+  .slide-4 .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    background: rgba(39, 174, 96, 0.2);
+    border: 2px solid #27ae60;
+    color: #27ae60;
+    font-size: 26px;
+    font-weight: 700;
+    padding: 12px 24px;
+    border-radius: 8px;
+    width: fit-content;
+  }
+  .slide-4 .headline {
+    font-size: 64px;
+    font-weight: 900;
+    color: #fff;
+    line-height: 1.15;
+  }
+  .slide-4 .headline span { color: #27ae60; }
+  .slide-4 .stats {
+    display: flex;
+    gap: 40px;
+    margin-top: 10px;
+  }
+  .slide-4 .stat {
+    text-align: center;
+  }
+  .slide-4 .stat-number {
+    font-size: 52px;
+    font-weight: 900;
+    color: #f39c12;
+  }
+  .slide-4 .stat-label {
+    font-size: 22px;
+    color: rgba(255,255,255,0.5);
+    font-weight: 500;
+  }
+
+  /* ── Slide 5: CTA ── */
+  .slide-5 {
+    background: linear-gradient(170deg, #1a1a2e 0%, #0a0a0a 100%);
+  }
+  .slide-5 .content {
+    position: relative;
+    z-index: 2;
+    padding: 80px 60px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    gap: 40px;
+  }
+  .slide-5 .photo-circle {
+    width: 280px;
+    height: 280px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 6px solid #f39c12;
+    flex-shrink: 0;
+  }
+  .slide-5 .photo-circle img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+  }
+  .slide-5 .name {
+    font-size: 42px;
+    font-weight: 800;
+    color: #fff;
+  }
+  .slide-5 .creds {
+    font-size: 26px;
+    color: rgba(255,255,255,0.5);
+    font-weight: 400;
+    line-height: 1.6;
+  }
+  .slide-5 .cta-text {
+    font-size: 52px;
+    font-weight: 900;
+    color: #f39c12;
+    line-height: 1.3;
+    max-width: 800px;
+  }
+  .slide-5 .wa-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 16px;
+    background: #25d366;
+    color: #fff;
+    font-size: 34px;
+    font-weight: 700;
+    padding: 22px 50px;
+    border-radius: 60px;
+    text-decoration: none;
+  }
+  .slide-5 .wa-icon {
+    font-size: 40px;
+  }
+  .slide-5 .free-tag {
+    font-size: 24px;
+    color: rgba(255,255,255,0.4);
+    font-weight: 400;
+  }
+
+  /* Page label */
+  .page-label {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    background: rgba(0,0,0,0.6);
+    color: #fff;
+    padding: 8px 16px;
+    font-size: 18px;
+    border-radius: 6px;
+    z-index: 99;
+    font-weight: 600;
+    display: none; /* hide for export, show for dev */
+  }
+
+  /* Swipe indicator */
+  .swipe-hint {
+    position: absolute;
+    bottom: 50px;
+    right: 60px;
+    color: rgba(255,255,255,0.3);
+    font-size: 22px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    z-index: 10;
+  }
+  .swipe-hint .arrow {
+    font-size: 30px;
+    animation: swipe 1.5s ease-in-out infinite;
+  }
+  @keyframes swipe {
+    0%, 100% { transform: translateX(0); }
+    50% { transform: translateX(10px); }
+  }
+  /* Export bar */
+  .export-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: #222;
+    padding: 16px 40px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    z-index: 9999;
+    border-bottom: 2px solid #f39c12;
+  }
+  .export-bar button {
+    background: #f39c12;
+    color: #000;
+    border: none;
+    padding: 12px 28px;
+    font-size: 16px;
+    font-weight: 700;
+    border-radius: 8px;
+    cursor: pointer;
+    font-family: 'Poppins', sans-serif;
+  }
+  .export-bar button:hover { background: #e67e22; }
+  .export-bar .status {
+    color: rgba(255,255,255,0.6);
+    font-size: 14px;
+    font-family: 'Poppins', sans-serif;
+  }
+  .export-bar .info {
+    color: rgba(255,255,255,0.4);
+    font-size: 13px;
+    margin-left: auto;
+    font-family: 'Poppins', sans-serif;
+  }
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+</head>
+<body>
+
+<!-- Export toolbar -->
+<div class="export-bar">
+  <button onclick="exportAllSlides()">Download All Slides as PNG</button>
+  <span class="status" id="export-status">Ready — each slide exports at 1080×1350</span>
+  <span class="info">Creative 1: NEET khatam hua. Ab kya?</span>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- SLIDE 1 — HOOK                                              -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<div class="slide slide-1">
+  <img class="bg-photo" src="../../public/assets/img/shivang-portrait.jpg" alt="">
+  <div class="content">
+    <div class="tag">NEET 2026</div>
+    <div>
+      <div class="hook">
+        NEET khatam hua.<br>
+        <span>Ab kya?</span>
+      </div>
+      <div class="sub" style="margin-top: 30px;">
+        Main bhi wahan tha. 3 baar.<br>
+        Phir ek decision ne sab badal diya.
+      </div>
+    </div>
+    <div class="brand">
+      <div class="dot"></div>
+      @mbbswithdr.shivang
+    </div>
+  </div>
+  <div class="swipe-hint">
+    Swipe <span class="arrow">&rarr;</span>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- SLIDE 2 — THE STRUGGLE                                      -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<div class="slide slide-2">
+  <div class="big-number">3x</div>
+  <div class="content">
+    <div class="year-label">Meri kahani</div>
+
+    <div class="timeline-item fail">
+      <div class="timeline-marker">
+        <div class="circle">1</div>
+        <div class="line"></div>
+      </div>
+      <div class="timeline-text">
+        <h3>Pehla NEET attempt</h3>
+        <p>Score low aaya. Papa ne kaha ek aur try karo.</p>
+      </div>
+    </div>
+
+    <div class="timeline-item fail">
+      <div class="timeline-marker">
+        <div class="circle">2</div>
+        <div class="line"></div>
+      </div>
+      <div class="timeline-text">
+        <h3>Doosra attempt</h3>
+        <p>Phir se fail. Log bolne lage "doctor nahi banega."</p>
+      </div>
+    </div>
+
+    <div class="timeline-item fail">
+      <div class="timeline-marker">
+        <div class="circle">3</div>
+        <div class="line"></div>
+      </div>
+      <div class="timeline-text">
+        <h3>Teesra attempt</h3>
+        <p>Same result. Sapna tootta dikh raha tha.</p>
+      </div>
+    </div>
+
+    <div class="timeline-item win">
+      <div class="timeline-marker">
+        <div class="circle" style="font-size: 28px;">&#10003;</div>
+      </div>
+      <div class="timeline-text">
+        <h3>Phir ek decision liya...</h3>
+        <p>Russia jaane ka. Aur sab badal gaya.</p>
+      </div>
+    </div>
+  </div>
+  <div class="swipe-hint">
+    Swipe <span class="arrow">&rarr;</span>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- SLIDE 3 — THE DECISION                                      -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<div class="slide slide-3">
+  <div class="photo-strip">
+    <img src="../../public/assets/img/chuvash-state-university-campus.jpg" alt="Chuvash State University">
+  </div>
+  <div class="content">
+    <div class="decision-tag">THE DECISION</div>
+    <div class="headline">
+      Russia gaya.<br>
+      <span>Chuvash State University</span><br>
+      mein MBBS kiya.
+    </div>
+    <div class="details">
+      6 saal padhai. NMC recognized degree.<br>
+      Indian mess. Indian community. Safe city.<br>
+      Total cost: <strong style="color: #f39c12;">Rs 25.85 lakh</strong>
+    </div>
+  </div>
+  <div class="swipe-hint">
+    Swipe <span class="arrow">&rarr;</span>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- SLIDE 4 — THE RESULT                                        -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<div class="slide slide-4">
+  <div class="photo-strip">
+    <img src="../../public/assets/img/shivang-graduation-chuvash.jpg" alt="Dr. Shivang Graduation">
+  </div>
+  <div class="content">
+    <div class="badge">&#10003; MBBS GRADUATE</div>
+    <div class="headline">
+      Aaj <span>India mein</span><br>
+      govt hospital mein<br>
+      intern hoon.
+    </div>
+    <div class="stats">
+      <div class="stat">
+        <div class="stat-number">3x</div>
+        <div class="stat-label">NEET drops</div>
+      </div>
+      <div class="stat">
+        <div class="stat-number">6</div>
+        <div class="stat-label">saal Russia</div>
+      </div>
+      <div class="stat">
+        <div class="stat-number">1</div>
+        <div class="stat-label">MBBS degree</div>
+      </div>
+    </div>
+  </div>
+  <div class="swipe-hint">
+    Swipe <span class="arrow">&rarr;</span>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- SLIDE 5 — CTA                                               -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<div class="slide slide-5">
+  <div class="content">
+    <div class="photo-circle">
+      <img src="../../public/assets/img/shivang-portrait.jpg" alt="Dr. Shivang">
+    </div>
+    <div class="name">Dr. Shivang Gupta</div>
+    <div class="creds">
+      MBBS — Chuvash State University, Russia<br>
+      Intern — G.R.M.C Gwalior (Govt Hospital)
+    </div>
+    <div class="cta-text">
+      Tumhare saath bhi<br>ho sakta hai.
+    </div>
+    <div class="wa-btn">
+      <span class="wa-icon">&#9742;</span>
+      WhatsApp karo — FREE hai
+    </div>
+    <div class="free-tag">No agent fee. No selling. Sirf guidance.</div>
+  </div>
+</div>
+
+<script>
+async function exportAllSlides() {
+  const status = document.getElementById('export-status');
+  const slides = document.querySelectorAll('.slide');
+  const exportBar = document.querySelector('.export-bar');
+
+  // Hide export bar during capture
+  exportBar.style.display = 'none';
+
+  for (let i = 0; i < slides.length; i++) {
+    status.textContent = `Exporting slide ${i + 1} of ${slides.length}...`;
+
+    try {
+      const canvas = await html2canvas(slides[i], {
+        width: 1080,
+        height: 1350,
+        scale: 1,
+        useCORS: true,
+        allowTaint: true,
+        backgroundColor: null,
+        logging: false,
+      });
+
+      const link = document.createElement('a');
+      link.download = `creative-1-slide-${i + 1}.png`;
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+
+      // Small delay between downloads
+      await new Promise(r => setTimeout(r, 500));
+    } catch (err) {
+      console.error(`Slide ${i + 1} export failed:`, err);
+    }
+  }
+
+  exportBar.style.display = 'flex';
+  status.textContent = `Done! ${slides.length} slides exported as PNG.`;
+}
+</script>
+
+</body>
+</html>
